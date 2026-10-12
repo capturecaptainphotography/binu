@@ -12,17 +12,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="games.css">
+<link rel="stylesheet" href="motion.css">
 <script>document.documentElement.classList.add('js');</script>
+<script src="sfx.js" defer></script>
 <script src="site.js" defer></script>
+<script src="fx.js" defer></script>
 <script src="games/core.js" defer></script>
 <script src="games/quick1.js" defer></script>
 <script src="games/quick2.js" defer></script>
 <script src="games/board1.js" defer></script>
 <script src="games/board2.js" defer></script>
 <script src="games/arcade.js" defer></script>
+<script src="games/polish.js" defer></script>
 <script src="games/hub.js" defer></script>
+<script type="module" src="js/three-scene.js"></script>
 </head>
-<body>
+<body data-person="games">
+
+<div class="fx-aurora" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 
 <a class="skip-link" href="#hub">Skip to the games</a>
 
@@ -41,6 +48,7 @@
 
   <!-- Hero -->
   <section class="wrap games-hero" aria-labelledby="games-title">
+    <canvas class="hero-3d" data-scene="games" aria-hidden="true"></canvas>
     <div>
       <span class="kicker">Two players or the computer 🤖</span>
       <h1 id="games-title">Welcome to our <span class="pop">games room</span>! 🎮</h1>
@@ -68,6 +76,59 @@
         <span class="gk-chip">🏓 Pong</span>
         <span class="gk-chip">🃏 Memory</span>
       </div>
+    </div>
+  </section>
+
+  <!-- Marquee -->
+  <section class="wrap" aria-label="Games in our room">
+    <div class="fx-marquee">
+      <div class="fx-marquee-track" data-marquee>
+        <span>♟️ <b>Chess</b></span>
+        <span>🎲 <b>Ludo</b></span>
+        <span>⛓️ <b>Checkers</b></span>
+        <span>⚫ <b>Reversi</b></span>
+        <span>🐍 <b>Snakes &amp; Ladders</b></span>
+        <span>🪨 <b>Mancala</b></span>
+        <span>⬡ <b>Hex</b></span>
+        <span>🕸️ <b>Nine Men's Morris</b></span>
+        <span>🚢 <b>Battleship</b></span>
+        <span>❌ <b>Tic-Tac-Toe</b></span>
+        <span>🔴 <b>Connect Four</b></span>
+        <span>🃏 <b>Memory Match</b></span>
+        <span>🎵 <b>Simon Says</b></span>
+        <span>🔤 <b>Hangman</b></span>
+        <span>🔢 <b>Guess the Number</b></span>
+        <span>⚡ <b>Reaction Duel</b></span>
+        <span>🎯 <b>Mastermind</b></span>
+        <span>🔀 <b>Word Scramble</b></span>
+        <span>🏓 <b>Pong</b></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="wrap section reveal" aria-labelledby="how-title">
+    <div class="section-head">
+      <span class="eyebrow">How the games room works</span>
+      <h2 id="how-title">Two ways to play, every game 🎯</h2>
+      <p>Pick a game from the shelf, then choose your players. You can switch between the two modes in the middle of a game.</p>
+    </div>
+    <div class="grid cols-3 stagger">
+      <article class="card">
+        <div class="card-icon b">👥</div>
+        <h3>2 Players</h3>
+        <p>Two people share one screen. Take turns on the same device — perfect for brothers, cousins and best friends.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon y">🤖</div>
+        <h3>vs Computer</h3>
+        <p>Playing on your own? The system plays against you. Chess plans a few moves ahead, checkers looks even deeper.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon g">🔊</div>
+        <h3>Sound &amp; motion</h3>
+        <p>Pieces pop, dice tumble, cards flip and the winner gets a fanfare. Tap the speaker in the corner to mute it.</p>
+      </article>
     </div>
   </section>
 
