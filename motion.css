@@ -490,3 +490,62 @@ body[data-person="himu"] .fx-marquee-track b{color:var(--red-dark)}
   .fx .reveal,.fx .stagger > *{opacity:1;transform:none}
   .fx-marquee-track{animation:none}
 }
+
+/* ==========================================================================
+   THE COLOUR PASS
+   One crayon colour per card, chip, fact, subject and dream, cycling through
+   the four house colours. Every grid on the site stops looking flat, and the
+   games room can borrow the same variables for its own colours.
+   ========================================================================== */
+.grid > *:nth-child(4n+1),.facts li:nth-child(4n+1),.stats > *:nth-child(4n+1),.sib-row > *:nth-child(4n+1),.chip:nth-child(4n+1){
+  --card-hue:#e63946;--card-soft:#fce7e9;--card-deep:#a62932
+}
+.grid > *:nth-child(4n+2),.facts li:nth-child(4n+2),.stats > *:nth-child(4n+2),.sib-row > *:nth-child(4n+2),.chip:nth-child(4n+2){
+  --card-hue:#2f7fd1;--card-soft:#e6f0f9;--card-deep:#225b96
+}
+.grid > *:nth-child(4n+3),.facts li:nth-child(4n+3),.stats > *:nth-child(4n+3),.sib-row > *:nth-child(4n+3),.chip:nth-child(4n+3){
+  --card-hue:#2f9e63;--card-soft:#e6f6ee;--card-deep:#1f7346
+}
+.grid > *:nth-child(4n+4),.facts li:nth-child(4n+4),.stats > *:nth-child(4n+4),.sib-row > *:nth-child(4n+4),.chip:nth-child(4n+4){
+  --card-hue:#f4801a;--card-soft:#fef0e2;--card-deep:#b45c08
+}
+
+/* A crayon stripe along the top of every card. */
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:7px;z-index:1;
+  background:linear-gradient(90deg,var(--card-hue,#e63946),transparent 94%);
+}
+.card:hover::before{height:9px}
+
+/* Stats, facts and dream bars each get their own colour too. */
+.stat{position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:var(--card-hue,#e63946)}
+.stat b{color:var(--card-deep,#e63946)}
+
+.facts li{padding-left:20px}
+.facts li::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:7px;background:var(--card-hue,#e63946);
+}
+
+.subject{box-shadow:var(--shadow), inset 7px 0 0 var(--card-hue,#e63946)}
+
+.sib{padding-left:22px}
+.sib::before{content:'';position:absolute;left:0;top:0;bottom:0;width:7px;background:var(--card-hue,#e63946)}
+
+.dream .dream-bar i{background:linear-gradient(90deg,var(--card-hue,#ffc93c),var(--card-deep,#e63946))}
+.dream .dream-top span{color:var(--card-deep,#e63946)}
+
+/* Chips become a handful of coloured sweets. */
+.chip{background:var(--card-soft,#fff);border-color:var(--card-hue,#e63946);color:var(--card-deep,#6d6577)}
+
+/* The marquee and the footer get a rainbow edging. */
+.fx-marquee-track span:nth-child(3n+1) b{color:#e63946}
+.fx-marquee-track span:nth-child(3n+2) b{color:#2f7fd1}
+.fx-marquee-track span:nth-child(3n+3) b{color:#2f9e63}
+.site-footer{
+  border-top:6px solid;
+  border-image:linear-gradient(90deg,#e63946,#f4801a,#e8a300,#2f9e63,#2f7fd1,#8b5cf6) 1;
+}
+
+/* The games-room shelf and the brother cards keep their own accents. */
+.game-card::before{display:none}

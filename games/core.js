@@ -87,6 +87,51 @@
   /* --- dice faces --- */
   var DICE = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
 
+  /* ---------------------------------------------------------------- levels
+     Every game is played at Level 1..N. The profile turns a level number
+     into numbers a game can use: bigger boards, deeper thinking, faster
+     balls, fewer lives. Level 1 always has the most blunders built in, the
+     top level is the game at its full strength. */
+  var LEVEL_COUNT = 5;
+  var LEVEL_NAMES = ['Level 1 · Easy', 'Level 2 · Warm-up', 'Level 3 · Tricky', 'Level 4 · Tough', 'Level 5 · Expert'];
+
+  function profile(level, total) {
+    var count = Math.max(1, total || LEVEL_COUNT);
+    var lv = Math.max(1, Math.min(count, Math.round(level || 1)));
+    var t = count > 1 ? (lv - 1) / (count - 1) : 0;
+    return {
+      level: lv,
+      total: count,
+      t: t,
+      /* one value per level, e.g. ints([2, 3, 4, 5, 6]) */
+      ints: function (list) { return list[Math.min(list.length - 1, lv - 1)]; },
+      pick: function (list) { return list[Math.min(list.length - 1, lv - 1)]; },
+      lerp: function (a, b) { return a + (b - a) * t; },
+      round: function (a, b) { return Math.round(a + (b - a) * t); },
+      /* thinking depth: 1 at level 1, up to max at the top level */
+      depth: function (max) { return Math.max(1, Math.round(1 + t * (max - 1))); },
+      /* chance the computer plays a silly move — disappears as levels rise */
+      blunder: function (easy) {
+        var top = easy === undefined ? 0.6 : easy;
+        return Math.max(0, top * (1 - t));
+      },
+      /* timings: slow at level 1, fast at the top */
+      ms: function (slow, quick) { return Math.round(slow + (quick - slow) * t); }
+    };
+  }
+
+  function levelCount(game) { return (game && game.levels) || LEVEL_COUNT; }
+  function levelName(game, level) {
+    var names = (game && game.levelNames) || LEVEL_NAMES;
+    var lv = Math.max(1, Math.min(names.length, Math.round(level || 1)));
+    return names[lv - 1];
+  }
+  function levelHint(game, level) {
+    var hints = (game && game.levelHints) || [];
+    var lv = Math.max(1, Math.min(hints.length, Math.round(level || 1)));
+    return hints[lv - 1] || '';
+  }
+
   function register(game) { GAMES.push(game); }
   function byId(id) {
     for (var i = 0; i < GAMES.length; i++) { if (GAMES[i].id === id) { return GAMES[i]; } }
@@ -106,6 +151,12 @@
     delay: delay,
     confetti: confetti,
     cover: cover,
+    profile: profile,
+    levelCount: levelCount,
+    levelName: levelName,
+    levelHint: levelHint,
+    LEVEL_NAMES: LEVEL_NAMES,
+    LEVEL_COUNT: LEVEL_COUNT,
     DICE: DICE
   };
 })();

@@ -320,6 +320,11 @@
 
 /* ---------------- pong ---------------- */
 .gk-canvas{width:100%;max-width:640px;display:block;margin:0 auto;border-radius:18px;background:#101a2b}
+/* Pong's arena wears both players' colours as a frame around the court. */
+.gk-pong{
+  border:4px solid var(--p1-soft,#ffe9d6);
+  box-shadow:0 0 0 5px var(--p2-soft,#dff1ff),0 30px 44px -30px rgba(11,20,36,.9);
+}
 .gk-pong-controls{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;max-width:640px;margin:14px auto 0}
 .gk-padstack{display:flex;flex-direction:column;gap:8px;align-items:center}
 .gk-padlabel{font-weight:800;font-size:.82rem;color:var(--muted)}
@@ -339,4 +344,290 @@
   .gk-root{padding:12px}
   .gk-rpad{min-height:110px}
   .gk-padbtn{width:60px;height:42px}
+}
+
+/* ==========================================================================
+   PLAYERS, COLOURS AND GAME THEMES
+   games/players.js paints --p1/--p2 (and a soft/tint/mid/deep ramp of each)
+   onto <html> and onto the game screen, and games/hub.js paints --accent per
+   game. Everything below simply spends those variables, so the whole room
+   changes colour the moment somebody picks a new colour.
+   The values here are the defaults used before the script runs.
+   ========================================================================== */
+:root{
+  --p1:#e63946; --p1-soft:#fce7e9; --p1-tint:#f7c0c4; --p1-mid:#ef7c85;
+  --p1-deep:#a62932; --p1-glow:rgba(230,57,70,.42);
+  --p2:#2f7fd1; --p2-soft:#e6f0f9; --p2-tint:#bcd6f0; --p2-mid:#76abe1;
+  --p2-deep:#225b96; --p2-glow:rgba(47,127,209,.42);
+  --accent:#e63946; --accent-soft:#fce7e9; --accent-mid:#f7c0c4; --accent-deep:#a62932;
+  --accent-glow:rgba(230,57,70,.42);
+  --cpu:#8b5cf6;
+}
+
+/* ---------------------------------------------- the players panel */
+.gk-who-strip{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;
+  background:linear-gradient(100deg,#fff,var(--p1-soft) 42%,var(--p2-soft));
+  border:3px solid #fff;border-radius:22px;padding:12px 16px;margin:0 0 18px;
+  box-shadow:var(--shadow);
+}
+.gk-stage-who{
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px;
+  margin:0 0 12px;
+}
+.gk-who-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.gk-who-pip{
+  display:inline-flex;align-items:center;gap:7px;padding:5px 12px 5px 8px;border-radius:999px;
+  background:var(--pc-soft,#fff);color:var(--pc-deep,#2a2530);
+  border:2px solid var(--pc,#fff);font-weight:800;font-size:.86rem;
+}
+.gk-who-face{font-size:1.05rem;line-height:1}
+.gk-who-label{
+  font-size:.66rem;text-transform:uppercase;letter-spacing:.12em;opacity:.72;font-weight:800;
+}
+.gk-who-name{font-weight:800;max-width:16ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gk-who-vs{font-weight:800;color:var(--muted);font-size:.8rem}
+/* The "change names & colours" button glows in the first player's colour. */
+.gk-who-edit{
+  border:2px solid #fff;
+  box-shadow:0 0 0 3px var(--p1-soft,#ffe9d6),0 14px 24px -18px var(--p1-deep,#bc1a2a);
+}
+.gk-who-edit:hover{box-shadow:0 0 0 3px var(--p1-mid,#ffd9e2),0 18px 28px -18px var(--p1-deep,#bc1a2a)}
+
+/* ---------------------------------------------- levels on the game screen */
+.gk-levels{
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px;
+  margin:0 0 12px;padding:10px 14px;border-radius:20px;
+  border:3px solid #fff;background:linear-gradient(100deg,#fff,var(--accent-soft,#fff6dd));
+  box-shadow:var(--shadow);
+}
+.gk-level-tag{
+  font-weight:800;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+}
+.gk-level-row{display:flex;flex-wrap:wrap;gap:6px}
+.gk-level-btn{
+  width:44px;height:44px;border-radius:14px;border:3px solid rgba(42,37,48,.12);background:#fff;
+  font-family:var(--font-head);font-weight:800;font-size:.95rem;color:var(--ink);cursor:pointer;
+  transition:transform .18s ease, border-color .18s ease, background .18s ease, color .18s ease;
+}
+.gk-level-btn:hover{transform:translateY(-3px);border-color:var(--accent,var(--red))}
+.gk-level-on{
+  background:var(--accent,var(--red));border-color:var(--accent,var(--red));color:#fff;
+  box-shadow:0 14px 22px -14px var(--accent,var(--red));
+}
+.gk-level-done{border-color:#3fa96e}
+.gk-level-locked{opacity:.55;cursor:not-allowed;background:#f5f2f7}
+.gk-level-locked:hover{transform:none;border-color:rgba(42,37,48,.12)}
+.gk-level-name{font-weight:800;font-size:.84rem;color:var(--accent-deep,var(--ink))}
+.gk-level-hint{font-size:.8rem;font-weight:700;color:var(--muted)}
+.gk-next{animation:gkPop .5s ease}
+@keyframes gkPop{0%{transform:scale(.9);opacity:.5}100%{transform:scale(1);opacity:1}}
+
+/* the tic-tac-toe board shrinks its marks on the bigger boards */
+.gk-ttt-n3 .gk-ttt-cell{font-size:clamp(1.7rem,6.4vw,2.5rem)}
+.gk-ttt-n4 .gk-ttt-cell{font-size:clamp(1.1rem,4.6vw,1.7rem)}
+
+/* levels, stars and trophies on the shelf */
+.gk-card-level{
+  margin-left:auto;font-weight:800;font-size:.7rem;letter-spacing:.02em;padding:5px 10px;border-radius:999px;
+  background:var(--accent-soft,#fff6dd);color:var(--accent-deep,#6b5a45);white-space:nowrap;
+}
+.gk-card-stars{display:flex;gap:3px;font-size:.86rem;margin:6px 0 2px}
+.gk-star{opacity:.28;filter:grayscale(1)}
+.gk-star-on{opacity:1;filter:none;animation:gkPop .4s ease}
+.gk-random{background:var(--yellow);color:#5a4200;border-color:rgba(0,0,0,.06)}
+.gk-trophy-btn{background:linear-gradient(100deg,#fff,var(--p1-soft,#fff6dd));color:var(--p1-deep,#6b5a45)}
+
+/* the trophy shelf */
+.gk-trophies{display:block}
+.gk-trophy-sum{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.gk-trophy-stat{
+  background:#fff;border-radius:20px;padding:14px 10px;text-align:center;border:3px solid #fff;
+  box-shadow:var(--shadow);
+}
+.gk-trophy-stat strong{display:block;font-family:var(--font-head);font-size:1.6rem;color:var(--red);line-height:1.1}
+.gk-trophy-stat small{font-weight:800;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.gk-trophy-list{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));margin-top:16px}
+.gk-trophy{
+  display:flex;align-items:center;gap:10px;background:#fff;border-radius:20px;padding:12px 16px;
+  border:3px solid #fff;box-shadow:var(--shadow);cursor:pointer;font:inherit;text-align:left;
+  transition:transform .2s ease, border-color .2s ease;
+}
+.gk-trophy:hover{transform:translateY(-4px) rotate(-.6deg);border-color:var(--accent,var(--red))}
+.gk-trophy-emoji{font-size:1.5rem;line-height:1}
+.gk-trophy-name{flex:1;font-family:var(--font-head);font-weight:800;font-size:.98rem}
+.gk-trophy-level{font-weight:800;font-size:.78rem;color:var(--accent-deep,var(--muted));white-space:nowrap}
+.gk-trophy-stars{font-size:.82rem;letter-spacing:1px}
+.gk-trophy-wins{font-weight:800;font-size:.78rem;color:var(--muted);white-space:nowrap}
+@media (max-width:620px){.gk-trophy-sum{grid-template-columns:repeat(2,1fr)}}
+
+.gk-players{
+  position:fixed;inset:0;z-index:120;display:flex;align-items:flex-start;justify-content:center;
+  padding:26px 14px 40px;overflow:auto;
+  background:rgba(28,22,34,.55);backdrop-filter:blur(6px);
+  animation:fadeIn .22s ease;
+}
+.gk-players[hidden]{display:none}
+html.gk-pp-open,html.gk-pp-open body{overflow:hidden}
+.gk-players-card{
+  position:relative;width:min(1040px,100%);background:linear-gradient(160deg,#fff,#fffaf5);
+  border:4px solid #fff;border-radius:30px;padding:26px;box-shadow:0 40px 80px -40px rgba(42,37,48,.9);
+  animation:popin .3s ease;
+}
+.gk-players-card h2{margin:0 0 .2em;font-size:clamp(1.4rem,3.4vw,1.9rem)}
+.gk-players-lead{color:var(--muted);margin:0 0 18px;max-width:70ch}
+.gk-pp-x{
+  position:absolute;top:14px;right:14px;width:40px;height:40px;border-radius:50%;
+  border:2px solid rgba(42,37,48,.12);background:#fff;font-size:1rem;cursor:pointer;
+}
+.gk-pp-x:hover{background:var(--p1-soft)}
+.gk-pp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:16px}
+.gk-pp{
+  background:linear-gradient(170deg,var(--pc-soft,#fff),#fff 70%);
+  border:3px solid var(--pc,#fff);border-radius:22px;padding:16px;display:grid;gap:10px;align-content:start;
+}
+.gk-pp-head{display:flex;align-items:center;gap:12px}
+.gk-pp-face{
+  width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:1.7rem;
+  background:#fff;box-shadow:0 0 0 3px var(--pc,#fff);
+}
+.gk-pp-role strong{display:block;font-family:var(--font-head);font-size:1.05rem}
+.gk-pp-role small{color:var(--muted);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.12em}
+.gk-pp-tag{font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted)}
+.gk-pp-name-row{display:grid;gap:4px}
+.gk-pp-name{width:100%;flex:none}
+.gk-pp-name:focus{outline-color:var(--pc)}
+.gk-pp-faces{display:flex;flex-wrap:wrap;gap:5px}
+.gk-pp-face-btn{
+  width:34px;height:34px;border-radius:10px;border:2px solid rgba(42,37,48,.1);background:#fff;
+  font-size:1.05rem;line-height:1;cursor:pointer;padding:0;
+}
+.gk-pp-face-btn:hover{transform:translateY(-2px)}
+.gk-pp-face-btn.gk-pp-on{border-color:var(--pc);background:var(--pc-soft)}
+.gk-pp-colors{display:flex;flex-wrap:wrap;gap:6px}
+.gk-pp-color{
+  width:30px;height:30px;border-radius:50%;border:3px solid #fff;background:var(--sw,#ccc);
+  cursor:pointer;box-shadow:0 2px 6px -2px rgba(0,0,0,.5);padding:0;
+}
+.gk-pp-color.gk-pp-on{box-shadow:0 0 0 3px var(--ink)}
+.gk-pp-skins{margin-top:16px;display:grid;gap:6px}
+.gk-filter-row{display:flex;flex-wrap:wrap;gap:8px}
+.gk-pp-actions{justify-content:flex-start}
+
+/* ---------------------------------------------- colourful page furniture */
+.games-hero-art{background:linear-gradient(150deg,#ffe9d6,#ffe1ea 34%,#e6f0fb 68%,#e8f8ef)}
+#filters .gk-filter:nth-child(1){--pill:#e63946}
+#filters .gk-filter:nth-child(2){--pill:#4f5bd5}
+#filters .gk-filter:nth-child(3){--pill:#e8a300}
+#filters .gk-filter:nth-child(4){--pill:#2f9e63}
+.gk-filter.gk-filter-on{background:var(--pill,var(--red));border-color:var(--pill,var(--red))}
+
+/* Each game card wears its own colour. */
+.game-card{border-color:var(--accent-soft,#fff)}
+.game-card .game-emoji{
+  background:linear-gradient(140deg,#fff,var(--accent-soft));
+  box-shadow:inset 0 0 0 2px var(--accent-mid,rgba(0,0,0,.06));
+}
+.game-card .game-tag{color:var(--accent-deep,#1b5a9c);background:var(--accent-soft,rgba(58,166,232,.12))}
+.game-card:hover{box-shadow:0 34px 54px -30px var(--accent-glow), 0 0 0 3px var(--accent-mid)}
+.game-card .gk-btn-main{background:var(--accent);color:#fff}
+.game-card .gk-btn-ghost{border-color:var(--accent-mid);color:var(--accent-deep)}
+
+/* The game screen takes on the game's colour too. */
+.game-stage .stage-head{border-color:var(--accent-soft,#fff)}
+.game-stage .gk-status{border-left:7px solid var(--accent);background:linear-gradient(90deg,var(--accent-soft),#fff6dd)}
+.game-stage .gk-root{box-shadow:0 30px 60px -34px var(--accent-glow), 0 0 0 4px var(--accent-soft)}
+.game-stage .gk-rules[open]{box-shadow:inset 0 0 0 2px var(--accent-soft)}
+
+/* ---------------------------------------------- every game in your colours */
+.gk-ttt-cell.gk-X{color:var(--p1)}
+.gk-ttt-cell.gk-O{color:var(--p2)}
+.gk-ttt-cell.gk-X,.gk-ttt-cell.gk-O{text-shadow:0 2px 0 rgba(0,0,0,.12)}
+
+.gk-c4-cell.gk-p1{background:var(--p1-soft);box-shadow:inset 0 0 0 6px var(--p1)}
+.gk-c4-cell.gk-p2{background:var(--p2-soft);box-shadow:inset 0 0 0 6px var(--p2)}
+
+.gk-db .gk-own-P1::after{background:var(--p1)}
+.gk-db .gk-own-P2::after{background:var(--p2)}
+.gk-db .gk-box.gk-own-P1{background:var(--p1-soft);color:var(--p1-deep)}
+.gk-db .gk-box.gk-own-P2{background:var(--p2-soft);color:var(--p2-deep)}
+
+.gk-disc-B{background:var(--p1)}
+.gk-disc-W{background:var(--p2);box-shadow:inset 0 0 0 3px rgba(255,255,255,.55)}
+
+.gk-chess .gk-sq.gk-side-b{color:var(--p1)}
+.gk-chess .gk-sq.gk-side-w{color:var(--p2)}
+.gk-checkers .gk-chk.gk-side-p1{box-shadow:inset 0 0 0 3px var(--p1-mid)}
+.gk-checkers .gk-chk.gk-side-p2{box-shadow:inset 0 0 0 3px var(--p2-mid)}
+
+.gk-token-red{background:var(--p1)}
+.gk-token-yellow{background:var(--p2);color:#fff}
+.gk-home-red{background:var(--p1-mid)}
+.gk-home-yellow{background:var(--p2-mid)}
+.gk-yard-red{background:var(--p1-soft)}
+.gk-yard-yellow{background:var(--p2-soft)}
+
+.gk-store-p1{color:var(--p1-deep);box-shadow:0 0 0 3px var(--p1-soft)}
+.gk-store-p2{color:var(--p2-deep);box-shadow:0 0 0 3px var(--p2-soft)}
+.gk-pit-live{border-color:var(--p1);background:var(--p1-soft)}
+
+.gk-hex-p1{background:var(--p1);color:#fff}
+.gk-hex-p2{background:var(--p2);color:#fff}
+
+.gk-mp1{background:var(--p1);border-color:var(--p1)}
+.gk-mp2{background:var(--p2);border-color:var(--p2)}
+
+.gk-arena.gk-go .gk-rpad.gk-p1{background:var(--p1)}
+.gk-arena.gk-go .gk-rpad.gk-p2{background:var(--p2)}
+.gk-arena.gk-done .gk-rpad.gk-p1{background:var(--p1-soft)}
+.gk-arena.gk-done .gk-rpad.gk-p2{background:var(--p2-soft)}
+.gk-rpad.gk-p1{box-shadow:inset 0 0 0 4px var(--p1-soft)}
+.gk-rpad.gk-p2{box-shadow:inset 0 0 0 4px var(--p2-soft)}
+
+.gk-mem-card{background:linear-gradient(160deg,#fff,var(--accent-soft,#f1f5ff))}
+.gk-mem-card.gk-matched{background:var(--p1-soft);box-shadow:0 0 0 4px var(--p1-mid)}
+
+.gk-word{color:var(--accent-deep,#2a2530)}
+.gk-key:hover{background:var(--accent-soft,#fff6dd)}
+.gk-key.gk-used{background:var(--accent-soft,#f2eef6);color:var(--accent-deep,#6d6577)}
+.gk-scramble{color:var(--accent-deep,#bc1a2a)}
+.gk-num,.gk-range{color:var(--accent-deep,#6d6577)}
+
+.gk-here{box-shadow:inset 0 0 0 3px var(--accent,#e63946)}
+.gk-ladder{background:#e8f8ef;box-shadow:inset 0 0 0 2px rgba(63,169,110,.25)}
+.gk-snakecell{background:#ffe9f0;box-shadow:inset 0 0 0 2px rgba(230,57,70,.18)}
+
+.gk-bs-cell{background:var(--accent-soft,#cfeaff);box-shadow:inset 0 0 0 2px rgba(255,255,255,.7)}
+.gk-hex-cell{background:var(--accent-soft,rgba(42,37,48,.08))}
+.gk-hex-cell:hover{background:var(--accent-mid,rgba(42,37,48,.16))}
+
+.gk-pong-controls .gk-padstack-p1 .gk-padbtn{border-color:#fff;box-shadow:0 0 0 3px var(--pc),0 10px 20px -14px var(--pc)}
+.gk-pong-controls .gk-padstack-p2 .gk-padbtn{border-color:#fff;box-shadow:0 0 0 3px var(--pc),0 10px 20px -14px var(--pc)}
+.gk-pong-controls .gk-padlabel{color:var(--pc,var(--muted))}
+
+.gk-pads .gk-pad:nth-child(4n+1){--pad:#e63946}
+.gk-pads .gk-pad:nth-child(4n+2){--pad:#2f7fd1}
+.gk-pads .gk-pad:nth-child(4n+3){--pad:#2f9e63}
+.gk-pads .gk-pad:nth-child(4n+4){--pad:#e8a300}
+.gk-pads .gk-pad{background:var(--pad,#fff)}
+.gk-pads .gk-pad.gk-lit{background:var(--pad,#fff);filter:brightness(1.6) saturate(1.3)}
+
+.gk-stone{background:radial-gradient(circle at 32% 28%,#fff 5%,var(--accent,#ffc93c) 60%,var(--accent-deep,#d9a400))}
+
+/* ---------------------------------------------- the rainbow board style */
+html[data-skin="rainbow"] .gk-sq.gk-light{background:#fff4d9}
+html[data-skin="rainbow"] .gk-sq.gk-dark{background:#ffd9e8}
+html[data-skin="rainbow"] .gk-ludo-cell{background:rgba(255,255,255,.5)}
+html[data-skin="rainbow"] .gk-ludo-track{background:linear-gradient(140deg,#fff,#fff0f6)}
+html[data-skin="rainbow"] .gk-hex-cell{background:var(--accent-mid,#ffd9e8)}
+html[data-skin="rainbow"] .gk-mem-card{background:linear-gradient(160deg,var(--accent-soft),#fff)}
+html[data-skin="rainbow"] .gk-pit{background:linear-gradient(160deg,#fff,var(--accent-soft))}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+@media (max-width:620px){
+  .gk-players{padding:12px 8px 30px}
+  .gk-players-card{padding:18px;border-radius:22px}
+  .gk-pp-grid{grid-template-columns:1fr}
+  .gk-who-strip{padding:10px 12px}
 }

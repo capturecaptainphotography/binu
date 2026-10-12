@@ -44,7 +44,7 @@
   }
   function ludoLegal(tokens, p, d) {
     var out = [];
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < tokens[p].length; i++) {
       var pos = tokens[p][i];
       if (pos === 56) { continue; }
       if (pos < 0) { if (d === 6) { out.push(i); } continue; }
@@ -58,11 +58,18 @@
     name: 'Ludo',
     emoji: '🎲',
     tag: 'Board',
-    blurb: 'Roll a six, race four tokens home and knock the others back.',
-    howTo: 'Roll a 6 to bring a token out of your yard. Tap a glowing token to move it. Landing on an opponent sends it home, but star squares are safe. Roll an exact number to reach the centre. Red is you.',
+    blurb: 'Roll a six, race your tokens home and knock the others back — more tokens every level.',
+    howTo: 'Roll a 6 to bring a token out of your yard. Tap a glowing token to move it. Landing on an opponent sends it home, but star squares are safe. Roll an exact number to reach the centre. Red is you. Higher levels give everybody more tokens and a cleverer opponent.',
+    levels: 5,
+    levelNames: ['Level 1 · 2 tokens each', 'Level 2 · 2 tokens, cleverer', 'Level 3 · 3 tokens each', 'Level 4 · 4 tokens each', 'Level 5 · 4 tokens, expert'],
+    levelHints: ['A quick race with two tokens.', 'The computer starts to think.',
+      'Three tokens to bring home.', 'The full four-token game.', 'Four tokens and a ruthless opponent.'],
     logic: { track: TRACK, cell: ludoCell, safe: SAFE, global: ludoGlobal, legal: ludoLegal, yard: ludoYard },
     mount: function (root, api) {
-      var tokens = [[-1, -1, -1, -1], [-1, -1, -1, -1]];
+      var myTokens = api.p.ints([2, 2, 3, 4, 4]);
+      var blunder = api.p.blunder(0.6);
+      function freshTokens() { var out = [], i; for (i = 0; i < myTokens; i++) { out.push(-1); } return out; }
+      var tokens = [freshTokens(), freshTokens()];
       var turn = 0, dice = 0, rolled = false, sixes = 0, over = false, dead = false, movable = [], busy = false;
       api.onDestroy(function () { dead = true; });
 
@@ -106,7 +113,7 @@
       }
 
       function allHome(p) {
-        for (var i = 0; i < 4; i++) { if (tokens[p][i] !== 56) { return false; } }
+        for (var i = 0; i < tokens[p].length; i++) { if (tokens[p][i] !== 56) { return false; } }
         return true;
       }
 
@@ -121,7 +128,7 @@
           if (to <= 50) {
             var gi = ludoGlobal(p, to);
             if (!SAFE[gi]) {
-              for (var oi = 0; oi < 4; oi++) {
+              for (var oi = 0; oi < tokens[1 - p].length; oi++) {
                 var opos = tokens[1 - p][oi];
                 if (opos >= 0 && opos <= 50 && ludoGlobal(1 - p, opos) === gi) { tokens[1 - p][oi] = -1; captured++; }
               }
@@ -137,7 +144,7 @@
         if (allHome(p)) {
           over = true;
           api.confetti(150);
-          api.finish('🏆 ' + api.names[p] + ' got all four tokens home — winner!');
+          api.finish('🏆 ' + api.names[p] + ' got all ' + tokens[p].length + ' tokens home on level ' + api.level + ' — winner!');
           return;
         }
         if (extra) {
@@ -166,7 +173,7 @@
         score = to * 0.6;
         var gi = ludoGlobal(p, to);
         if (SAFE[gi]) { score += 45; }
-        for (var oi = 0; oi < 4; oi++) {
+        for (var oi = 0; oi < tokens[1 - p].length; oi++) {
           var opos = tokens[1 - p][oi];
           if (opos < 0 || opos > 50) { continue; }
           var ogi = ludoGlobal(1 - p, opos);
@@ -179,7 +186,7 @@
 
       function maybeCpu() {
         if (dead || over || api.mode !== 'cpu' || turn === 0 || rolled) { return; }
-        K.delay(650, function () {
+        K.delay(api.p.ms(780, 320), function () {
           if (dead || over || rolled) { return; }
           roll();
           if (rolled && movable.length > 1) {
@@ -190,6 +197,7 @@
                 var sc = aiScore(1, movable[i]);
                 if (sc > bestScore) { bestScore = sc; best = movable[i]; }
               }
+              if (Math.random() < blunder) { best = K.pick(movable); }
               move(best);
             });
           }
@@ -261,7 +269,10 @@
   /* =====================================================
      Mancala
      ===================================================== */
-  function macStart() { return [4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0]; }
+  function macStart(stones) {
+    var n = stones || 4;
+    return [n, n, n, n, n, n, 0, n, n, n, n, n, n, 0];
+  }
   function macSow(state, pit, player) {
     var s = state.slice(), skip = player === 0 ? 13 : 6, stones = s[pit], i = pit;
     s[pit] = 0;
@@ -302,11 +313,17 @@
     name: 'Mancala',
     emoji: '🌰',
     tag: 'Board',
-    blurb: 'Scoop up stones and drop them one by one around the board.',
+    blurb: 'Scoop up stones and drop them one by one around the board — more stones every level.',
+    levels: 5,
+    levelNames: ['Level 1 · 2 stones per pit', 'Level 2 · 3 stones', 'Level 3 · the classic 4', 'Level 4 · 5 stones', 'Level 5 · 6 stones per pit'],
+    levelHints: ['Tiny piles, quick counting.', 'Three stones a pit.',
+      'The classic mancala board.', 'Five stones makes long chains.', 'Six stones a pit — a big harvest!'],
     howTo: 'Tap one of your pits to pick up its stones — they drop one per pit going round. Land the last stone in your store for a free turn. Land it in an empty pit and you capture the stones opposite. Most stones at the end wins.',
     logic: { start: macStart, sow: macSow, capture: macCapture, over: macOver, finish: macFinish, pits: macPits },
     mount: function (root, api) {
-      var s = macStart(), turn = 0, over = false, dead = false;
+      var startStones = api.p.ints([2, 3, 4, 5, 6]);
+      var blunder = api.p.blunder(0.5);
+      var s = macStart(startStones), turn = 0, over = false, dead = false;
       var stores = h('div', { class: 'gk-stores' });
       var rowTop = h('div', { class: 'gk-pit-row' });
       var rowBottom = h('div', { class: 'gk-pit-row' });
@@ -339,8 +356,8 @@
           over = true;
           render();
           api.confetti(120);
-          if (s[6] === s[13]) { api.finish('🤝 A draw — ' + s[6] + ' stones each.'); }
-          else { api.finish('🏆 ' + api.names[s[6] > s[13] ? 0 : 1] + ' wins ' + Math.max(s[6], s[13]) + '–' + Math.min(s[6], s[13]) + '!'); }
+          if (s[6] === s[13]) { api.finish('🤝 A draw on level ' + api.level + ' — ' + s[6] + ' stones each.'); }
+          else { api.finish('🏆 ' + api.names[s[6] > s[13] ? 0 : 1] + ' wins level ' + api.level + ' ' + Math.max(s[6], s[13]) + '–' + Math.min(s[6], s[13]) + '!'); }
           return;
         }
         if (!res.extra) { turn = 1 - turn; }
@@ -352,6 +369,7 @@
 
       function aiPick() {
         var pits = macPits(s, 1), best = pits[0], bestScore = -Infinity;
+        if (Math.random() < blunder) { return K.pick(pits); }
         for (var i = 0; i < pits.length; i++) {
           var res = macSow(s, pits[i], 1);
           var score = res.s[13] - res.s[6];
@@ -398,7 +416,8 @@
   /* =====================================================
      Hex
      ===================================================== */
-  var HEX_N = 7;
+  var HEX_N = 7;   /* the classic board; each level changes the size */
+  var PLAYS = 12;  /* how many random playouts the computer runs per move */
   function hexNeighbours(r, c) {
     var d = [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, 1], [1, -1]], out = [];
     for (var i = 0; i < 6; i++) {
@@ -441,10 +460,18 @@
     name: 'Hex',
     emoji: '⬡',
     tag: 'Board',
-    blurb: 'Join your two sides of the honeycomb before your rival joins theirs.',
-    howTo: 'You are ⬤ and must build an unbroken chain from the top edge to the bottom edge. Your rival is ⭕ and joins left to right. Tap any empty hexagon.',
+    blurb: 'Join your two sides of the honeycomb before your rival joins theirs — a bigger board every level.',
+    howTo: 'You are ⬤ and must build an unbroken chain from the top edge to the bottom edge. Your rival is ⭕ and joins left to right. Tap any empty hexagon. Each level the honeycomb grows and the computer thinks harder.',
+    levels: 5,
+    levelNames: ['Level 1 · 5×5 honeycomb', 'Level 2 · 6×6', 'Level 3 · 7×7, the classic', 'Level 4 · 8×8', 'Level 5 · 9×9 and a deep thinker'],
+    levelHints: ['A small, friendly board.', 'A little bigger.',
+      'The classic seven.', 'Eight across — long chains.', 'Nine by nine against a strong opponent.'],
     logic: { won: hexWon, neighbours: hexNeighbours, playout: hexPlayout, size: HEX_N },
     mount: function (root, api) {
+      /* The board and the computer's thinking both grow with the level. */
+      HEX_N = api.p.ints([5, 6, 7, 8, 9]);
+      PLAYS = api.p.ints([3, 6, 10, 16, 24]);
+      var blunder = api.p.blunder(0.5);
       var b = [], r, c;
       for (r = 0; r < HEX_N; r++) { b.push([]); for (c = 0; c < HEX_N; c++) { b[r].push(0); } }
       var turn = 1, over = false, dead = false;
@@ -456,8 +483,7 @@
         if (over || b[rr][cc] || (api.mode === 'cpu' && turn === 2)) { return; }
         b[rr][cc] = turn;
         if (hexWon(b, turn)) {
-          over = true; render(); api.confetti(140);
-          api.finish('🏆 ' + api.names[turn - 1] + ' joined the two sides and wins!');
+          over = true; render(); api.confetti(140);            api.finish('🏆 ' + api.names[turn - 1] + ' joined the two sides on the ' + HEX_N + '×' + HEX_N + ' board and wins level ' + api.level + '!');
           return;
         }
         turn = 3 - turn;
@@ -468,6 +494,7 @@
       function aiMove() {
         var empty = [], rr, cc, i;
         for (rr = 0; rr < HEX_N; rr++) { for (cc = 0; cc < HEX_N; cc++) { if (!b[rr][cc]) { empty.push([rr, cc]); } } }
+        if (Math.random() < blunder) { return K.pick(empty); }
         for (i = 0; i < empty.length; i++) {
           b[empty[i][0]][empty[i][1]] = 2;
           var wins = hexWon(b, 2);
@@ -483,7 +510,7 @@
         var best = empty[0], bestScore = -1;
         for (i = 0; i < empty.length; i++) {
           var score = 0;
-          for (var t = 0; t < 12; t++) {
+          for (var t = 0; t < PLAYS; t++) {
             b[empty[i][0]][empty[i][1]] = 2;
             var res = hexPlayout(b, 1);
             b[empty[i][0]][empty[i][1]] = 0;
@@ -564,7 +591,10 @@
     MM_MILLS.push([0, 1, 2].map(function (ring) { return MM_INDEX[MM_RINGS[ring][p].join(',')]; }));
   });
 
-  function mmStart() { return { board: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], toPlace: [9, 9], side: 1 }; }
+  function mmStart(pieces) {
+    var n = pieces || 9;
+    return { board: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], toPlace: [n, n], side: 1 };
+  }
   function mmCount(b, p) { var n = 0; for (var i = 0; i < 24; i++) { if (b[i] === p) { n++; } } return n; }
   function mmInMill(b, idx, p) {
     for (var i = 0; i < MM_MILLS.length; i++) {
@@ -620,11 +650,17 @@
     name: "Nine Men's Morris",
     emoji: '🔷',
     tag: 'Board',
-    blurb: 'Build lines of three and steal your rival’s pieces.',
-    howTo: 'Place all nine pieces first, then slide them along the lines to a free spot. Make a line of three — a mill — to remove an opponent piece. Leave your rival with fewer than three pieces or no moves to win.',
+    blurb: 'Build lines of three and steal your rival’s pieces — short games at first, the full nine later.',
+    howTo: 'Place your pieces first, then slide them along the lines to a free spot. Make a line of three — a mill — to remove an opponent piece. Leave your rival with fewer than three pieces or no moves to win. Higher levels start with more pieces and a smarter computer.',
+    levels: 5,
+    levelNames: ['Level 1 · 3 pieces each', 'Level 2 · 4 pieces each', 'Level 3 · 6 pieces each', 'Level 4 · nine pieces each', 'Level 5 · nine pieces, expert computer'],
+    levelHints: ['Quick three-piece games.', 'Four pieces each.',
+      'Six pieces each.', 'The full Nine Men’s Morris.', 'Nine pieces against a sharp rival.'],
     logic: { start: mmStart, moves: mmMoves, apply: mmApply, remove: mmRemove, removable: mmRemovable, lost: mmLost, points: MM_POINTS, adj: MM_ADJ, mills: MM_MILLS },
     mount: function (root, api) {
-      var st = mmStart(), selected = null, over = false, dead = false, pending = false;
+      var pieces = api.p.ints([3, 4, 6, 9, 9]);
+      var blunder = api.p.blunder(0.5);
+      var st = mmStart(pieces), selected = null, over = false, dead = false, pending = false;
       api.onDestroy(function () { dead = true; });
 
       var board = h('div', { class: 'gk-morris' });
@@ -658,7 +694,7 @@
         over = true;
         render();
         api.confetti(140);
-        api.finish('🏆 ' + api.names[winnerIndex(st.side)] + ' wins!');
+        api.finish('🏆 ' + api.names[winnerIndex(st.side)] + ' wins level ' + api.level + ' with ' + pieces + ' pieces!');
         return true;
       }
 
@@ -709,6 +745,7 @@
       function aiChoose() {
         var moves = mmMoves(st);
         if (!moves.length) { return null; }
+        if (Math.random() < blunder) { return K.pick(moves); }
         var best = moves[0], bestScore = -Infinity;
         for (var i = 0; i < moves.length; i++) {
           var n = mmApply(st, moves[i]);
@@ -726,7 +763,7 @@
       function maybeCpu() {
         if (dead || over || api.mode !== 'cpu' || st.side === 1) { return; }
         api.setStatus('🤖 ' + api.names[1] + ' is thinking…');
-        K.delay(520, function () {
+        K.delay(api.p.ms(620, 300), function () {
           if (dead || over) { return; }
           var move = aiChoose();
           if (!move) { finishIfLost(); return; }
@@ -771,12 +808,14 @@
   var BS_N = 6;
   var BS_SHIPS = [3, 2, 2, 1];
   var BS_CELLS = 8; /* 3 + 2 + 2 + 1 */
+  /* Each level hides a bigger fleet on the same 6×6 sea. */
+  var BS_FLEETS = [[2, 1], [3, 2], [3, 2, 2, 1], [4, 3, 2, 1], [4, 3, 2, 2, 1]];
 
   function bsRandom() {
     var grid = [], r, c;
     for (r = 0; r < BS_N; r++) { grid.push([]); for (c = 0; c < BS_N; c++) { grid[r].push(0); } }
     BS_SHIPS.forEach(function (size) {
-      for (var guard = 0; guard < 300; guard++) {
+      for (var guard = 0; guard < 600; guard++) {
         var horiz = Math.random() < 0.5, rr = K.randInt(BS_N), cc = K.randInt(BS_N), fits = true, i;
         for (i = 0; i < size; i++) {
           var r2 = horiz ? rr : rr + i, c2 = horiz ? cc + i : cc;
@@ -826,12 +865,19 @@
     name: 'Battleship',
     emoji: '🚢',
     tag: 'Board',
-    blurb: 'Hide your fleet on the sea, then hunt down your rival’s ships.',
-    howTo: 'Each player hides ships of 3, 2, 2 and 1 squares on a 6×6 sea. Tap a square to fire: 💥 is a hit, 💦 is a splash. Sink all 8 ship squares of the enemy fleet before yours goes down. Two-player mode passes the device between turns.',
+    blurb: 'Hide your fleet on the sea, then hunt down your rival’s ships — a bigger fleet every level.',
+    howTo: 'Each player hides ships on a 6×6 sea. Tap a square to fire: 💥 is a hit, 💦 is a splash. Sink the whole enemy fleet before yours goes down. Two-player mode passes the device between turns. Each level adds more ships (and a smarter computer).',
+    levels: 5,
+    levelNames: ['Level 1 · 2 small ships', 'Level 2 · 2 bigger ships', 'Level 3 · 4 ships (the classic)', 'Level 4 · 4 bigger ships', 'Level 5 · 5 ships, clever rival'],
+    levelHints: ['Two little ships to find.', 'A pair of bigger ships.',
+      'The classic fleet of four.', 'Bigger ships, 10 squares.', 'Five ships (12 squares) and a clever rival.'],
     logic: { random: bsRandom, ships: BS_SHIPS, size: BS_N, cells: BS_CELLS, sunk: bsSunk, count: bsCellCount },
     mount: function (root, api) {
+      BS_SHIPS = api.p.ints(BS_FLEETS).slice();
+      var shipCells = BS_SHIPS.reduce(function (a, b) { return a + b; }, 0);
+      var blunder = api.p.blunder(0.6);
       var fleets = [bsRandom(), bsRandom()];
-      var shots = [new Array(36).fill(false), new Array(36).fill(false)];
+      var shots = [new Array(BS_N * BS_N).fill(false), new Array(BS_N * BS_N).fill(false)];
       var turn = 0, over = false, dead = false, hunt = [], revealed = false;
       api.onDestroy(function () { dead = true; });
 
@@ -847,7 +893,7 @@
 
       function left(p) {
         var n = 0, i;
-        for (i = 0; i < 36; i++) {
+        for (i = 0; i < BS_N * BS_N; i++) {
           if (fleets[p][Math.floor(i / BS_N)][i % BS_N] === 1 && !shots[1 - p][i]) { n++; }
         }
         return n;
@@ -874,19 +920,21 @@
         revealed = true;
         render();
         api.confetti(150);
-        api.finish('🏆 ' + api.names[p] + ' sank the whole fleet — winner!');
+        api.finish('🏆 ' + api.names[p] + ' sank the whole fleet on level ' + api.level + ' — winner!');
       }
 
       function cpuFire() {
         if (dead || over) { return; }
         var i, choice = -1;
-        while (hunt.length) {
-          var cand = hunt.pop();
-          if (!shots[1][cand]) { choice = cand; break; }
-        }
+        if (Math.random() >= blunder) {
+          while (hunt.length) {
+            var cand = hunt.pop();
+            if (!shots[1][cand]) { choice = cand; break; }
+          }
+        } else { hunt = []; }
         if (choice < 0) {
           var open = [];
-          for (i = 0; i < 36; i++) { if (!shots[1][i]) { open.push(i); } }
+          for (i = 0; i < BS_N * BS_N; i++) { if (!shots[1][i]) { open.push(i); } }
           choice = K.pick(open);
         }
         var r = Math.floor(choice / BS_N), c = choice % BS_N;
@@ -929,7 +977,7 @@
           cell.textContent = fired ? (hit ? '💥' : '💦') : (revealed && fleets[t][r][c] === 1 ? '🚢' : '');
         });
         var sunkInfo = bsSunk(fleets[t], myShots);
-        title.textContent = '🚢 Enemy fleet: ' + left(t) + ' of ' + BS_CELLS + ' squares left · ' +
+        title.textContent = '🚢 Enemy fleet: ' + left(t) + ' of ' + shipCells + ' squares left · ' +
           sunkInfo.sunk + ' of ' + sunkInfo.ships + ' ships sunk';
         sub.textContent = api.mode === 'cpu'
           ? '🛡️ Your fleet: ' + left(0) + ' of ' + BS_CELLS + ' squares left'

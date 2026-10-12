@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Awesome Games Room 🎮 | 22 games for Binu &amp; Himu</title>
-<meta name="description" content="22 family games you can play two-player on one screen or against the computer: chess, ludo, checkers, snakes and ladders, pong, memory and lots more.">
+<title>The Awesome Games Room 🎮 | 22 games and 112 levels for Binu &amp; Himu</title>
+<meta name="description" content="22 family games with 112 levels in all — chess, ludo, checkers, snakes and ladders, pong, memory and lots more. Play two-player on one screen or against the computer, and sign in to keep your levels and trophies.">
 <meta name="theme-color" content="#e63946">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎮%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,6 +17,7 @@
 <script src="sfx.js" defer></script>
 <script src="site.js" defer></script>
 <script src="fx.js" defer></script>
+<script src="account.js" defer></script>
 <script src="games/core.js" defer></script>
 <script src="games/quick1.js" defer></script>
 <script src="games/quick2.js" defer></script>
@@ -24,6 +25,7 @@
 <script src="games/board2.js" defer></script>
 <script src="games/arcade.js" defer></script>
 <script src="games/polish.js" defer></script>
+<script src="games/players.js" defer></script>
 <script src="games/hub.js" defer></script>
 <script type="module" src="js/three-scene.js"></script>
 </head>
@@ -54,16 +56,23 @@
       <h1 id="games-title">Welcome to our <span class="pop">games room</span>! 🎮</h1>
       <p>
         Binu and Himu built this corner of the website together. There are
-        <strong><span id="heroCount">22</span> games</strong> inside — chess, ludo, checkers,
-        snakes &amp; ladders, pong and lots more. Every single one can be played by
-        <strong>two players on one screen</strong>, or by one player against the
-        <strong>computer</strong>. Pick a game and press play!
+        <strong><span id="heroCount">22</span> games</strong> inside, and every one has
+        <strong>5 levels</strong> (memory match has 7) — that is 112 levels to beat! Start at level 1, win to
+        unlock the next one. Chess, ludo, checkers, snakes &amp; ladders, pong, memory
+        and lots more. Play <strong>two players on one screen</strong>, or take on the
+        <strong>computer</strong>.
       </p>
       <div class="chip-row">
+        <span class="chip">🎚️ 112 levels in all</span>
+        <span class="chip">👤 Sign in, save your levels</span>
+        <span class="chip">🏆 Trophies &amp; stars</span>
         <span class="chip">👥 2 Players mode</span>
         <span class="chip">🤖 vs Computer mode</span>
-        <span class="chip">🏆 Scoreboards</span>
-        <span class="chip">📱 Works on phones</span>
+        <span class="chip">🎨 Your names &amp; colours</span>
+      </div>
+      <div class="hero-actions">
+        <button class="btn btn-primary" type="button" id="signInHero">👤 Sign in &amp; keep my trophies</button>
+        <button class="btn btn-ghost" type="button" id="randomBtnHero">🎲 Surprise me — any game</button>
       </div>
     </div>
     <div class="games-hero-art">
@@ -110,14 +119,24 @@
   <section class="wrap section reveal" aria-labelledby="how-title">
     <div class="section-head">
       <span class="eyebrow">How the games room works</span>
-      <h2 id="how-title">Two ways to play, every game 🎯</h2>
-      <p>Pick a game from the shelf, then choose your players. You can switch between the two modes in the middle of a game.</p>
+      <h2 id="how-title">Two ways to play, five levels each, one trophy shelf 🎯</h2>
+      <p>Pick a game from the shelf, choose your players, then climb the levels. Switch between the two modes in the middle of a game.</p>
     </div>
-    <div class="grid cols-3 stagger">
+    <div class="grid cols-4 stagger">
       <article class="card">
-        <div class="card-icon b">👥</div>
-        <h3>2 Players</h3>
-        <p>Two people share one screen. Take turns on the same device — perfect for brothers, cousins and best friends.</p>
+        <div class="card-icon y">🎚️</div>
+        <h3>5 levels every game</h3>
+        <p>Level 1 is friendly, level 5 is expert. Bigger boards, more cards, faster balls and a cleverer computer each time. Win to unlock the next level.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon b">👤</div>
+        <h3>Sign in — no email needed</h3>
+        <p>Just pick a name and a secret password. Your levels, stars and trophies are kept for you, and your brother keeps his own.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon g">🏆</div>
+        <h3>Trophies &amp; stars</h3>
+        <p>Every game you play earns stars and trophies. The trophy shelf remembers your best level in all 22 games.</p>
       </article>
       <article class="card">
         <div class="card-icon y">🤖</div>
@@ -125,7 +144,12 @@
         <p>Playing on your own? The system plays against you. Chess plans a few moves ahead, checkers looks even deeper.</p>
       </article>
       <article class="card">
-        <div class="card-icon g">🔊</div>
+        <div class="card-icon g">🎨</div>
+        <h3>Your names, your colours</h3>
+        <p>Open the players panel and give everyone a name, a face and a colour. Every game says the real names, and the boards are painted in your colours.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon">🔊</div>
         <h3>Sound &amp; motion</h3>
         <p>Pieces pop, dice tumble, cards flip and the winner gets a fanfare. Tap the speaker in the corner to mute it.</p>
       </article>
@@ -137,16 +161,29 @@
     <div class="section-head">
       <span class="eyebrow">Choose your game</span>
       <h2 id="hub-title">All our games 🎯</h2>
-      <p>Tap <strong>vs Computer</strong> to play against the system, or <strong>2 Players</strong> to share the screen with a friend.</p>
+      <p>Tap <strong>vs Computer</strong> to play against the system, or <strong>2 Players</strong> to share the screen with a friend. Not you two? <strong>Change the names and colours</strong> below first.</p>
     </div>
+    <div class="gk-who-strip" id="whoStrip" aria-live="polite"></div>
     <div class="filter-row" id="filters" role="group" aria-label="Filter games">
       <button class="gk-filter gk-filter-on" type="button" data-filter="all">All games</button>
       <button class="gk-filter" type="button" data-filter="Board">♟️ Board games</button>
       <button class="gk-filter" type="button" data-filter="Quick">⚡ Quick games</button>
       <button class="gk-filter" type="button" data-filter="Arcade">🕹️ Arcade</button>
-      <span class="filter-count">Showing <b id="gameCount">22</b> games</span>
+      <button class="gk-filter gk-random" type="button" id="randomBtn" title="Open a random game">🎲 Surprise me</button>
+      <button class="gk-filter gk-trophy-btn" type="button" id="trophyBtn" title="Jump to your trophy shelf">🏆 My trophies</button>
+      <span class="filter-count">Showing <b id="gameCount">22</b> games · 112 levels</span>
     </div>
     <div class="game-grid" id="cards"></div>
+  </section>
+
+  <!-- Trophy shelf -->
+  <section class="wrap section" id="trophies" aria-labelledby="trophies-title">
+    <div class="section-head">
+      <span class="eyebrow">Trophy shelf</span>
+      <h2 id="trophies-title">My trophies 🏆</h2>
+      <p>Every completed game earns a trophy and every level you unlock earns a star. Signed in, this shelf is yours alone — <span id="trophyLine">sign in to keep your trophies</span>.</p>
+    </div>
+    <div class="gk-trophies" id="trophyGrid" aria-live="polite"></div>
   </section>
 
   <!-- The game screen -->
@@ -159,8 +196,9 @@
         <button class="gk-mode-btn" type="button" data-mode="two">👥 2 Players</button>
         <button class="gk-mode-btn gk-mode-on" type="button" data-mode="cpu">🤖 vs Computer</button>
       </div>
-      <button class="gk-btn gk-btn-ghost gk-btn-small" type="button" id="restartBtn">↻ Restart</button>
+      <button class="gk-btn gk-btn-ghost gk-btn-small" type="button" id="restartBtn">↻ Restart level</button>
     </div>
+    <div class="gk-stage-who" id="stageWho" aria-live="polite"></div>
     <p class="gk-status" id="statusLine" aria-live="polite"></p>
     <div class="gk-root" id="gameRoot"></div>
     <div class="gk-result" id="resultBanner" hidden>
@@ -176,13 +214,34 @@
     </details>
   </section>
 
+  <!-- Player options -->
+  <div class="gk-players" id="playersPanel" hidden>
+    <div class="gk-players-card" role="dialog" aria-modal="true" aria-labelledby="ppTitle">
+      <button class="gk-pp-x" type="button" id="ppClose" aria-label="Close player options">✖</button>
+      <h2 id="ppTitle">Who is playing? 🎨</h2>
+      <p class="gk-players-lead">Give everyone a name, a face and a colour. All 22 games use them straight away — and the boards are painted in your colours. Your choices are remembered for the player who is signed in.</p>
+      <div class="gk-pp-grid" id="ppGrid"></div>
+      <div class="gk-pp-skins">
+        <span class="gk-pp-tag">Board style</span>
+        <div class="gk-filter-row" id="ppSkins" role="group" aria-label="Board style">
+          <button class="gk-filter gk-filter-on" type="button" data-skin="classic">🎨 Classic</button>
+          <button class="gk-filter" type="button" data-skin="rainbow">🌈 Rainbow</button>
+        </div>
+      </div>
+      <div class="gk-controls gk-pp-actions">
+        <button class="gk-btn gk-btn-main" type="button" id="ppDone">✅ Done — let's play</button>
+        <button class="gk-btn gk-btn-ghost" type="button" id="ppReset">↺ Reset names</button>
+      </div>
+    </div>
+  </div>
+
 </main>
 
 <footer class="site-footer">
   <div class="wrap footer-inner">
     <div>
       <strong style="font-family:var(--font-head);font-size:1.1rem">🎮 The Awesome Games Room</strong>
-      <small>Built by Binu &amp; Himu · 22 games · made with ❤️ and a lot of clicking.</small>
+      <small>Built by Binu &amp; Himu · 22 games · 112 levels · made with ❤️ and a lot of clicking.</small>
     </div>
     <nav class="footer-links" aria-label="Footer">
       <a href="index.html">Binu's page</a>

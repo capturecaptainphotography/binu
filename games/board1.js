@@ -239,8 +239,12 @@
     name: 'Chess',
     emoji: '♟️',
     tag: 'Board',
-    blurb: 'The big one — full rules, real moves, a thinking opponent.',
-    howTo: 'Tap a piece to see where it can go, then tap a square to move. Castling, en passant and promotion all work (pawns become queens). Trap the other king so it cannot escape to win.',
+    blurb: 'The big one — full rules, real moves, a thinking opponent that plans deeper every level.',
+    howTo: 'Tap a piece to see where it can go, then tap a square to move. Castling, en passant and promotion all work (pawns become queens). Trap the other king so it cannot escape to win. Each level the computer thinks further ahead.',
+    levels: 5,
+    levelNames: ['Level 1 · cheeky beginner', 'Level 2 · it sees one move', 'Level 3 · it plans three ahead', 'Level 4 · four moves ahead', 'Level 5 · club player'],
+    levelHints: ['The computer plays some very odd moves.', 'It spots simple captures.',
+      'A real opponent.', 'Four-ply search — be careful.', 'The full search. Take your time!'],
     logic: {
       start: chessStart, legal: chessLegal, movesFrom: chessMovesFrom, apply: chessApply,
       inCheck: chessInCheck, best: chessBest, eval: chessEval
@@ -249,6 +253,8 @@
       var st = chessStart();
       var selected = null, targets = [], over = false, dead = false, thinking = false;
       var humanColor = 'w';
+      var depth = api.p.ints([1, 2, 3, 4, 4]);
+      var blunder = api.p.blunder(0.7);
       api.onDestroy(function () { dead = true; });
 
       var board = K.grid(8, 8, { className: 'gk-chess', onCell: function (r, c) { tap(r, c); } });
@@ -288,7 +294,7 @@
           render();
           api.confetti(140);
           if (chessInCheck(st, st.side)) {
-            api.finish('🏆 Checkmate! ' + api.names[st.side === 'w' ? 1 : 0] + ' wins.');
+            api.finish('🏆 Checkmate on level ' + api.level + '! ' + api.names[st.side === 'w' ? 1 : 0] + ' wins.');
           } else {
             api.finish('🤝 Stalemate — no legal moves, so it is a draw.');
           }
@@ -304,7 +310,8 @@
         api.setStatus('🤖 ' + api.names[1] + ' is thinking…');
         K.delay(320, function () {
           if (dead || over) { return; }
-          var move = chessBest(st, 3);
+          var legal = chessLegal(st);
+          var move = (!legal.length || Math.random() < blunder) ? K.pick(legal) : chessBest(st, depth);
           thinking = false;
           if (!move) { checkEnd(); return; }
           st = chessApply(st, move.from, move.to);
@@ -320,6 +327,7 @@
         K.each(board, function (cell, r, c) {
           var pc = st.b[r][c];
           var cls = 'gk-cell gk-sq ' + ((r + c) % 2 === 0 ? 'gk-light' : 'gk-dark');
+          if (pc) { cls += pc[0] === 'w' ? ' gk-side-w' : ' gk-side-b'; }
           if (selected && selected.r === r && selected.c === c) { cls += ' gk-selected'; }
           for (var i = 0; i < targets.length; i++) {
             if (targets[i].r === r && targets[i].c === c) {
@@ -463,12 +471,18 @@
     name: 'Checkers',
     emoji: '⚫',
     tag: 'Board',
-    blurb: 'Jump your way across the board and crown your kings.',
-    howTo: 'Move one square diagonally forward. Jump over an opponent to capture — if you can capture you must. Reach the far side to become a king. Take all the pieces or block every move to win.',
+    blurb: 'Jump your way across the board and crown your kings — the computer looks deeper each level.',
+    howTo: 'Move one square diagonally forward. Jump over an opponent to capture — if you can capture you must. Reach the far side to become a king. Take all the pieces or block every move to win. Higher levels search further ahead.',
+    levels: 5,
+    levelNames: ['Level 1 · sleepy computer', 'Level 2 · two jumps ahead', 'Level 3 · three jumps ahead', 'Level 4 · sharp', 'Level 5 · deep thinker'],
+    levelHints: ['It misses easy jumps.', 'It sees the next jump.',
+      'It plans a few jumps.', 'It hunts for double jumps.', 'It searches six plies — bring your best!'],
     logic: { start: chkStart, moves: chkMoves, apply: chkApply, best: chkBest },
     mount: function (root, api) {
       var st = chkStart(), selected = null, choices = [], over = false, dead = false;
       var human = 'w';
+      var depth = api.p.ints([2, 3, 4, 5, 6]);
+      var blunder = api.p.blunder(0.6);
       api.onDestroy(function () { dead = true; });
 
       var board = K.grid(8, 8, { className: 'gk-checkers', onCell: function (r, c) { tap(r, c); } });
@@ -499,7 +513,7 @@
         if (!moves.length) {
           over = true;
           api.confetti(130);
-          api.finish('🏆 ' + api.names[st.side === 'w' ? 1 : 0] + ' wins — the other side has no moves left!');
+          api.finish('🏆 ' + api.names[st.side === 'w' ? 1 : 0] + ' wins level ' + api.level + ' — the other side has no moves left!');
           return;
         }
         maybeCpu();
@@ -510,14 +524,14 @@
         api.setStatus('🤖 ' + api.names[1] + ' is thinking…');
         K.delay(400, function () {
           if (dead || over) { return; }
-          var move = chkBest(st, 5);
+          var move = Math.random() < blunder ? K.pick(myMoves()) : chkBest(st, depth);
           if (!move) { return; }
           st = chkApply(st, move);
           render();
           if (!myMoves().length) {
             over = true;
             api.confetti(130);
-            api.finish('🏆 ' + api.names[st.side === 'w' ? 1 : 0] + ' wins!');
+            api.finish('🏆 ' + api.names[st.side === 'w' ? 1 : 0] + ' wins level ' + api.level + '!');
             return;
           }
           maybeCpu();
@@ -528,6 +542,7 @@
         K.each(board, function (cell, r, c) {
           var pc = st.b[r][c];
           var cls = 'gk-cell gk-sq gk-chk ' + ((r + c) % 2 === 0 ? 'gk-light' : 'gk-dark');
+          if (pc) { cls += (pc === 'w' || pc === 'W') ? ' gk-side-p1' : ' gk-side-p2'; }
           if (selected && selected.r === r && selected.c === c) { cls += ' gk-selected'; }
           for (var i = 0; i < choices.length; i++) {
             if (choices[i][0].to.r === r && choices[i][0].to.c === c) { cls += ' gk-can-go'; }
@@ -651,11 +666,17 @@
     name: 'Reversi',
     emoji: '⚪',
     tag: 'Board',
-    blurb: 'Trap your opponent and flip their discs to your colour.',
-    howTo: 'Place a disc so it traps a straight line of your opponent’s discs — everything trapped flips to your colour. If you have no legal move you miss a turn. Most discs at the end wins.',
+    blurb: 'Trap your opponent and flip their discs to your colour — a cleverer opponent every level.',
+    howTo: 'Place a disc so it traps a straight line of your opponent’s discs — everything trapped flips to your colour. If you have no legal move you miss a turn. Most discs at the end wins. Each level the computer looks further ahead.',
+    levels: 5,
+    levelNames: ['Level 1 · easy start', 'Level 2 · two moves ahead', 'Level 3 · three moves ahead', 'Level 4 · four moves ahead', 'Level 5 · five moves ahead'],
+    levelHints: ['It plays almost at random.', 'It grabs the corners sometimes.',
+      'A solid club player.', 'It sets up traps.', 'Five-ply search — play carefully!'],
     logic: { start: revStart, legal: revLegal, apply: revApply, score: revScore, best: revBest },
     mount: function (root, api) {
       var st = revStart(), over = false, dead = false, passes = 0;
+      var depth = api.p.ints([1, 2, 3, 4, 5]);
+      var blunder = api.p.blunder(0.55);
       api.onDestroy(function () { dead = true; });
 
       var scoreline = h('div', { class: 'gk-scoreline' });
@@ -717,7 +738,7 @@
         if (s.B === s.W) { api.finish('🤝 A perfect draw — ' + s.B + '–' + s.W + '.'); }
         else {
           var winner = s.B > s.W ? 'B' : 'W';
-          api.finish('🏆 ' + api.names[winner === 'B' ? 0 : 1] + ' wins ' + Math.max(s.B, s.W) + '–' + Math.min(s.B, s.W) + '!');
+          api.finish('🏆 ' + api.names[winner === 'B' ? 0 : 1] + ' wins level ' + api.level + ' ' + Math.max(s.B, s.W) + '–' + Math.min(s.B, s.W) + '!');
         }
       }
 
@@ -726,7 +747,7 @@
         api.setStatus('🤖 ' + api.names[1] + ' is thinking…');
         K.delay(420, function () {
           if (dead || over) { return; }
-          var move = revBest(st, 3);
+          var move = Math.random() < blunder ? K.pick(revLegal(st, st.side)) : revBest(st, depth);
           if (!move) {
             var skip = revClone(st);
             skip.side = 'B';
