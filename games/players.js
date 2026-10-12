@@ -125,13 +125,20 @@
   /* ------------------------------------------------------------------- api */
   function get() { return profile; }
 
+  /* An online game: the second player is a real person on another device, so
+     their name comes from the relay. Faces and colours still come from the
+     Player 2 card here. */
+  var peerName = null;
+
   function names(mode) {
     return mode === 'cpu'
       ? [profile.p1.name, profile.cpu.name]
-      : [profile.p1.name, profile.p2.name];
+      : [profile.p1.name, peerName || profile.p2.name];
   }
   function players(mode) {
-    return mode === 'cpu' ? [profile.p1, profile.cpu] : [profile.p1, profile.p2];
+    if (mode === 'cpu') { return [profile.p1, profile.cpu]; }
+    if (!peerName) { return [profile.p1, profile.p2]; }
+    return [profile.p1, { name: peerName, face: profile.p2.face, color: profile.p2.color }];
   }
   function faces(mode) {
     var list = players(mode);
@@ -171,6 +178,13 @@
   }
   function setSkin(skin) {
     profile.skin = skin === 'rainbow' ? 'rainbow' : 'classic';
+    emit();
+  }
+  /* Called by the online layer when a friend joins or leaves. */
+  function setOnlinePeer(name) {
+    var next = name ? cleanName(name, DEFAULTS.p2.name) : null;
+    if (next === peerName) { return; }
+    peerName = next;
     emit();
   }
   function reset() {
@@ -367,6 +381,8 @@
     ramp: ramp,
     open: show,
     close: hide,
+    setOnlinePeer: setOnlinePeer,
+    onlinePeer: function () { return peerName; },
     palette: COLORS,
     facesList: FACES,
     maxName: MAX_NAME,

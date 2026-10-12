@@ -33,6 +33,10 @@
   var levelStrip = null;
 
   var current = null, currentMode = 'cpu', currentLevel = 1, cleanups = [], filter = 'all';
+  /* Online play (games/online.js) rides on top of this: the host really plays
+     the game, the guest watches this same stage and sends their taps back. */
+  var ROLE_HOST = 'host', ROLE_MIRROR = 'mirror';
+  var onlineRole = null;
 
   /* A colour for every game, so the shelf looks like a box of sweets and each
      game's own screen picks up its colour. */
@@ -280,17 +284,20 @@
     return true;
   }
 
-  function endGame(text) {
+  function endGame(text, remote) {
     resultText.textContent = text;
     resultBanner.hidden = false;
-    K.confetti(90);
-    var nextBtn = document.getElementById('nextLevelBtn');
-    if (nextBtn && nextBtn.parentNode) { nextBtn.parentNode.removeChild(nextBtn); }
+    K.confetti(remote ? 60 : 90);
+    /* A win earlier in the session may have left its level-up button here. */
+    if (document.getElementById('nextLevelBtn')) {
+      var staleNext = document.getElementById('nextLevelBtn');
+      staleNext.parentNode.removeChild(staleNext);
+    }
     if (!current) { return; }
     var total = totalLevels(current);
     var won = didWin(text, currentMode, playerNames(currentMode));
     var out = PROG ? PROG.record(current.id, currentLevel, total, won) : null;
-    if (out && out.unlocked) {
+    if (out && out.unlocked && !remote) {
       var n = out.next;
       var again = document.getElementById('againBtn');
       var btn = h('button', {
@@ -307,9 +314,13 @@
     renderCards();
   }
 
-  function open(id, mode, level) {
+  function open(id, mode, level, opts) {
+    opts = opts || {};
     var game = K.byId(id);
     if (!game) { return; }
+    if (opts.host) { onlineRole = ROLE_HOST; }
+    else if (opts.mirror) { onlineRole = ROLE_MIRROR; }
+    else if (opts.solo) { onlineRole = null; }
     teardown();
     current = game;
     currentMode = mode;
@@ -330,12 +341,23 @@
     if (PROG) { PROG.visit(game.id, currentLevel); }
     if (hubSection) { hubSection.hidden = true; }
     if (stageSection) { stageSection.hidden = false; }
-    var p = K.profile(currentLevel, total);
-    try {
-      var handle = game.mount(gameRoot, makeApi(game, mode, currentLevel, p, total));
-      if (handle && typeof handle.destroy === 'function') { cleanups.push(handle.destroy); }
-    } catch (err) {
-      statusLine.textContent = '😵 That game would not start: ' + (err && err.message ? err.message : err);
+    if (stageSection) {
+      stageSection.classList.toggle('gk-online', onlineRole !== null);
+      stageSection.classList.toggle('gk-online-host', onlineRole === ROLE_HOST);
+      stageSection.classList.toggle('gk-online-mirror', onlineRole === ROLE_MIRROR);
+    }
+    if (onlineRole === ROLE_MIRROR) {
+      /* The guest does not run the game at all — the host's board arrives. */
+      if (window.GameOnline) { window.GameOnline.mountMirror(); }
+    } else {
+      var p = K.profile(currentLevel, total);
+      try {
+        var handle = game.mount(gameRoot, makeApi(game, mode, currentLevel, p, total));
+        if (handle && typeof handle.destroy === 'function') { cleanups.push(handle.destroy); }
+      } catch (err) {
+        statusLine.textContent = '😵 That game would not start: ' + (err && err.message ? err.message : err);
+      }
+      if (onlineRole === ROLE_HOST && window.GameOnline) { window.GameOnline.attachHost(); }
     }
     if (window.scrollTo) { window.scrollTo({ top: 0, behavior: 'smooth' }); }
   }
@@ -343,6 +365,7 @@
   function back() {
     teardown();
     current = null;
+    onlineRole = null;
     if (stageSection) { stageSection.hidden = true; }
     if (hubSection) { hubSection.hidden = false; }
     renderCards();
@@ -404,7 +427,7 @@
   if (modeSwitch) {
     Array.prototype.forEach.call(modeSwitch.children, function (btn) {
       btn.addEventListener('click', function () {
-        if (!current) { return; }
+        if (!current || onlineRole) { return; }
         open(current.id, btn.getAttribute('data-mode'), currentLevel);
       });
     });
@@ -429,4 +452,21 @@
   renderCards();
   paintTrophies();
   paintAccount();
+
+  /* The online layer (games/online.js) drives the stage through this. */
+  window.GameHub = {
+    open: open,
+    back: back,
+    current: function () {
+      if (!current) { return null; }
+      return { id: current.id, name: current.name, emoji: current.emoji, mode: currentMode, level: currentLevel };
+    },
+    status: function () { return statusLine ? statusLine.textContent : ''; },
+    isOver: function () { return !!(resultBanner && !resultBanner.hidden); },
+    /* The guest's own trophies for a game the host was running. */
+    remoteFinish: function (text) {
+      if (!current || onlineRole !== ROLE_MIRROR) { return; }
+      endGame(text, true);
+    }
+  };
 })();

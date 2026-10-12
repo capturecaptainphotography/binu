@@ -586,6 +586,8 @@ html.gk-pp-open,html.gk-pp-open body{overflow:hidden}
 
 .gk-mem-card{background:linear-gradient(160deg,#fff,var(--accent-soft,#f1f5ff))}
 .gk-mem-card.gk-matched{background:var(--p1-soft);box-shadow:0 0 0 4px var(--p1-mid)}
+/* the card that is face-up right now */
+.gk-mem-card.gk-revealed{box-shadow:0 0 0 4px var(--accent-mid,#ffd9e2)}
 
 .gk-word{color:var(--accent-deep,#2a2530)}
 .gk-key:hover{background:var(--accent-soft,#fff6dd)}
@@ -630,4 +632,64 @@ html[data-skin="rainbow"] .gk-pit{background:linear-gradient(160deg,#fff,var(--a
   .gk-players-card{padding:18px;border-radius:22px}
   .gk-pp-grid{grid-template-columns:1fr}
   .gk-who-strip{padding:10px 12px}
+}
+
+/* ---------------------------------------------- online play (game IDs) 🌐 */
+.gk-online-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 12px}
+.gk-online-live{
+  display:inline-flex;align-items:center;gap:8px;max-width:100%;
+  font-weight:800;font-size:.84rem;padding:7px 14px;border-radius:999px;
+  color:#1b5a9c;background:rgba(58,166,232,.14);border:2px solid rgba(58,166,232,.35);
+}
+.gk-online-live[data-turn="you"]{color:#1f7a4d;background:#e8f8ef;border-color:rgba(63,169,110,.45)}
+.gk-online-live[data-turn="them"]{color:#8a5a00;background:#fff4d9;border-color:rgba(232,163,0,.5)}
+/* Online games pick the mode on their own, and the guest only watches a board. */
+.gk-online .mode-switch{display:none}
+.gk-online .gk-online-bar .gk-btn{box-shadow:0 0 0 3px var(--accent-soft,#d7ecff)}
+.gk-online-mirror .gk-levels,
+.gk-online-mirror .gk-stage-who,
+.gk-online-mirror #restartBtn,
+.gk-online-mirror .gk-result .gk-controls{display:none}
+.gk-online-mirror .gk-root{box-shadow:inset 0 0 0 3px rgba(58,166,232,.32), var(--shadow)}
+.gk-online-mirror .gk-status{background:linear-gradient(90deg,#eef4ff,#fff6dd)}
+.gk-online-host .gk-online-live{background:#e8f8ef;border-color:rgba(63,169,110,.45);color:#1f7a4d}
+.gk-online-mirror .gk-online-live{background:#eef4ff;border-color:rgba(79,91,213,.38);color:#3b45a8}
+
+.gk-online-panel .gk-players-card{max-width:min(780px,94vw)}
+.gk-online-body{display:flex;flex-direction:column;gap:14px}
+.gk-online-lead{margin:0;color:var(--muted);font-weight:600}
+.gk-online-warn{
+  margin:0;background:#fff4d9;border:2px dashed rgba(232,163,0,.5);border-radius:16px;
+  padding:10px 14px;font-weight:700;color:#8a5a00;
+}
+.gk-online-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.gk-online-row .gk-input,.gk-online-name{max-width:220px}
+.gk-online-create{box-shadow:0 14px 24px -18px rgba(230,57,70,.65)}
+.gk-online-tail{display:none}
+.gk-online-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.gk-online-or{margin:0;text-align:center;color:var(--muted);font-weight:800;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase}
+.gk-online-join{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.gk-online-code{
+  font-family:var(--font-head);font-weight:800;font-size:clamp(2.2rem,7vw,3.2rem);
+  letter-spacing:.22em;color:#1b5a9c;background:#eef4ff;border:3px dashed rgba(58,166,232,.5);
+  border-radius:20px;padding:6px 20px 6px 26px;line-height:1.1;
+}
+/* the box you type a friend's game ID into */
+.gk-online-codeinput{
+  width:10ch;text-align:center;text-transform:uppercase;font-family:var(--font-head);
+  font-weight:800;font-size:1.1rem;letter-spacing:.16em;
+}
+.gk-online-codebox{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+.gk-online-hint{font-weight:800;color:#1f7a4d}
+.gk-online-link{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.gk-online-url{flex:1 1 240px;min-width:200px;font-size:.86rem}
+.gk-online-note{margin:0;color:var(--muted);font-size:.88rem}
+.gk-online-msg{margin:0;font-weight:800;color:#1b5a9c;min-height:1.2em}
+.gk-online-msg.gk-online-bad{color:#bc1a2a}
+
+@media (max-width:620px){
+  .gk-online-code{letter-spacing:.14em;padding:6px 14px 6px 18px}
+  .gk-online-join,.gk-online-actions{flex-direction:column;align-items:stretch}
+  .gk-online-bar{gap:8px}
+  .gk-online-live{font-size:.78rem}
 }

@@ -27,6 +27,8 @@
 <script src="games/polish.js" defer></script>
 <script src="games/players.js" defer></script>
 <script src="games/hub.js" defer></script>
+<script src="games/net.js" defer></script>
+<script src="games/online.js" defer></script>
 <script type="module" src="js/three-scene.js"></script>
 </head>
 <body data-person="games">
@@ -59,11 +61,13 @@
         <strong><span id="heroCount">22</span> games</strong> inside, and every one has
         <strong>5 levels</strong> (memory match has 7) — that is 112 levels to beat! Start at level 1, win to
         unlock the next one. Chess, ludo, checkers, snakes &amp; ladders, pong, memory
-        and lots more. Play <strong>two players on one screen</strong>, or take on the
+        and lots more. Play <strong>two players on one screen</strong>, play
+        <strong>online with a friend</strong> using a game ID, or take on the
         <strong>computer</strong>.
       </p>
       <div class="chip-row">
         <span class="chip">🎚️ 112 levels in all</span>
+        <span class="chip">🌐 Play online with a game ID</span>
         <span class="chip">👤 Sign in, save your levels</span>
         <span class="chip">🏆 Trophies &amp; stars</span>
         <span class="chip">👥 2 Players mode</span>
@@ -72,6 +76,7 @@
       </div>
       <div class="hero-actions">
         <button class="btn btn-primary" type="button" id="signInHero">👤 Sign in &amp; keep my trophies</button>
+        <button class="btn btn-ghost" type="button" id="onlineHeroBtn">🌐 Play online with a friend</button>
         <button class="btn btn-ghost" type="button" id="randomBtnHero">🎲 Surprise me — any game</button>
       </div>
     </div>
@@ -144,6 +149,11 @@
         <p>Playing on your own? The system plays against you. Chess plans a few moves ahead, checkers looks even deeper.</p>
       </article>
       <article class="card">
+        <div class="card-icon b">🌐</div>
+        <h3>Play online with a game ID</h3>
+        <p>Far apart? One of you taps <strong>Play online</strong> and makes a 4-letter game ID, the other types that ID in on their own device — then take turns on the same board from two houses.</p>
+      </article>
+      <article class="card">
         <div class="card-icon g">🎨</div>
         <h3>Your names, your colours</h3>
         <p>Open the players panel and give everyone a name, a face and a colour. Every game says the real names, and the boards are painted in your colours.</p>
@@ -198,6 +208,10 @@
       </div>
       <button class="gk-btn gk-btn-ghost gk-btn-small" type="button" id="restartBtn">↻ Restart level</button>
     </div>
+    <div class="gk-online-bar" id="onlineBar">
+      <button class="gk-btn gk-btn-ghost gk-btn-small" type="button" id="onlineBtn">🌐 Play online</button>
+      <span class="gk-online-live" id="onlineLive" hidden aria-live="polite"></span>
+    </div>
     <div class="gk-stage-who" id="stageWho" aria-live="polite"></div>
     <p class="gk-status" id="statusLine" aria-live="polite"></p>
     <div class="gk-root" id="gameRoot"></div>
@@ -213,6 +227,16 @@
       <p id="rulesText"></p>
     </details>
   </section>
+
+  <!-- Online play: make a game ID, or join a friend's -->
+  <div class="gk-players gk-online-panel" id="onlinePanel" hidden>
+    <div class="gk-players-card" role="dialog" aria-modal="true" aria-labelledby="opTitle">
+      <button class="gk-pp-x" type="button" id="onlineClose" aria-label="Close online play">✖</button>
+      <h2 id="opTitle">Play online with a game ID 🌐</h2>
+      <p class="gk-players-lead" id="onlineLead">Two players, two devices, one board. One of you makes a game ID and reads it out; the other types it in.</p>
+      <span class="gk-online-tail" hidden></span>
+    </div>
+  </div>
 
   <!-- Player options -->
   <div class="gk-players" id="playersPanel" hidden>

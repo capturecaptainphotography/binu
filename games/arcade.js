@@ -13,6 +13,8 @@
     tag: 'Arcade',
     blurb: 'The original video game — two paddles, one very fast ball, faster every level.',
     howTo: 'Move your paddle with the ▲ ▼ buttons, or with W / S and ↑ / ↓ on a keyboard. Miss the ball and your rival scores. Higher levels are quicker, your paddle is smaller and the finish line moves further away. Your paddles use the colours you chose in the players panel.',
+    online: false,
+    onlineWhy: 'Pong needs a live picture, not a board, so it is a one-screen game. Try the board games online instead — chess, ludo, checkers, snakes & ladders and lots more!',
     levels: 5,
     levelNames: ['Level 1 · first to 3, slow ball', 'Level 2 · first to 4', 'Level 3 · first to 5, classic', 'Level 4 · first to 7, quick', 'Level 5 · first to 9, lightning'],
     levelHints: ['A gentle ball and a big paddle.', 'A little quicker.',
