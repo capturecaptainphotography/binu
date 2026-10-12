@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Awesome Games Room 🎮 | 22 games for Binu &amp; Himu</title>
+<meta name="description" content="22 family games you can play two-player on one screen or against the computer: chess, ludo, checkers, snakes and ladders, pong, memory and lots more.">
+<meta name="theme-color" content="#e63946">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎮%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="games.css">
+<script>document.documentElement.classList.add('js');</script>
+<script src="site.js" defer></script>
+<script src="games/core.js" defer></script>
+<script src="games/quick1.js" defer></script>
+<script src="games/quick2.js" defer></script>
+<script src="games/board1.js" defer></script>
+<script src="games/board2.js" defer></script>
+<script src="games/arcade.js" defer></script>
+<script src="games/hub.js" defer></script>
+</head>
+<body>
+
+<a class="skip-link" href="#hub">Skip to the games</a>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#top">🎮 The Awesome Games Room</a>
+    <nav class="nav" aria-label="Pages">
+      <a href="index.html">Binu's Page 🧒</a>
+      <a href="himu.html">Himu's Page 👦</a>
+      <a href="#hub">All Games 🎯</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- Hero -->
+  <section class="wrap games-hero" aria-labelledby="games-title">
+    <div>
+      <span class="kicker">Two players or the computer 🤖</span>
+      <h1 id="games-title">Welcome to our <span class="pop">games room</span>! 🎮</h1>
+      <p>
+        Binu and Himu built this corner of the website together. There are
+        <strong><span id="heroCount">22</span> games</strong> inside — chess, ludo, checkers,
+        snakes &amp; ladders, pong and lots more. Every single one can be played by
+        <strong>two players on one screen</strong>, or by one player against the
+        <strong>computer</strong>. Pick a game and press play!
+      </p>
+      <div class="chip-row">
+        <span class="chip">👥 2 Players mode</span>
+        <span class="chip">🤖 vs Computer mode</span>
+        <span class="chip">🏆 Scoreboards</span>
+        <span class="chip">📱 Works on phones</span>
+      </div>
+    </div>
+    <div class="games-hero-art">
+      <span class="smiley" role="img" aria-label="A smiley face">😄</span>
+      <p style="margin:10px 0 0;font-weight:700;color:#6b5a45">Pick a game, then choose your players!</p>
+      <div class="art-chips">
+        <span class="gk-chip">♟️ Chess</span>
+        <span class="gk-chip">🎲 Ludo</span>
+        <span class="gk-chip">🐍 Snakes</span>
+        <span class="gk-chip">🏓 Pong</span>
+        <span class="gk-chip">🃏 Memory</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Game list -->
+  <section class="wrap" id="hub" aria-labelledby="hub-title">
+    <div class="section-head">
+      <span class="eyebrow">Choose your game</span>
+      <h2 id="hub-title">All our games 🎯</h2>
+      <p>Tap <strong>vs Computer</strong> to play against the system, or <strong>2 Players</strong> to share the screen with a friend.</p>
+    </div>
+    <div class="filter-row" id="filters" role="group" aria-label="Filter games">
+      <button class="gk-filter gk-filter-on" type="button" data-filter="all">All games</button>
+      <button class="gk-filter" type="button" data-filter="Board">♟️ Board games</button>
+      <button class="gk-filter" type="button" data-filter="Quick">⚡ Quick games</button>
+      <button class="gk-filter" type="button" data-filter="Arcade">🕹️ Arcade</button>
+      <span class="filter-count">Showing <b id="gameCount">22</b> games</span>
+    </div>
+    <div class="game-grid" id="cards"></div>
+  </section>
+
+  <!-- The game screen -->
+  <section class="wrap game-stage" id="stage" hidden aria-labelledby="stageTitle">
+    <div class="stage-head">
+      <button class="gk-btn gk-btn-ghost gk-btn-small" type="button" id="backBtn">← All games</button>
+      <h2><span id="stageEmoji" aria-hidden="true">🎮</span> <span id="stageTitle">Game</span></h2>
+      <span class="spacer"></span>
+      <div class="mode-switch" id="modeSwitch" role="group" aria-label="Choose who is playing">
+        <button class="gk-mode-btn" type="button" data-mode="two">👥 2 Players</button>
+        <button class="gk-mode-btn gk-mode-on" type="button" data-mode="cpu">🤖 vs Computer</button>
+      </div>
+      <button class="gk-btn gk-btn-ghost gk-btn-small" type="button" id="restartBtn">↻ Restart</button>
+    </div>
+    <p class="gk-status" id="statusLine" aria-live="polite"></p>
+    <div class="gk-root" id="gameRoot"></div>
+    <div class="gk-result" id="resultBanner" hidden>
+      <p id="resultText"></p>
+      <div class="gk-controls">
+        <button class="gk-btn gk-btn-main" type="button" id="againBtn">🔁 Play again</button>
+        <button class="gk-btn gk-btn-ghost" type="button" id="toListBtn">🎯 Back to all games</button>
+      </div>
+    </div>
+    <details class="gk-rules">
+      <summary>How to play 🤔</summary>
+      <p id="rulesText"></p>
+    </details>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>
+      <strong style="font-family:var(--font-head);font-size:1.1rem">🎮 The Awesome Games Room</strong>
+      <small>Built by Binu &amp; Himu · 22 games · made with ❤️ and a lot of clicking.</small>
+    </div>
+    <nav class="footer-links" aria-label="Footer">
+      <a href="index.html">Binu's page</a>
+      <a href="himu.html">Himu's page</a>
+      <a href="#hub">All games</a>
+      <a href="#top">Back to top ↑</a>
+    </nav>
+  </div>
+</footer>
+
+<button class="to-top" type="button" id="toTop" aria-label="Back to top of page">↑</button>
+<div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+
+</body>
+</html>

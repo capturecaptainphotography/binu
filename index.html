@@ -1,173 +1,370 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Binu's Awesome Corner</title>
-    <style>
-        body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            background: linear-gradient(135deg, #ff4d4d, #ffb3b3);
-            color: #333;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
-        header {
-            background: #cc0000;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            border-bottom: 5px solid #990000;
-        }
-        header h1 {
-            font-size: 2.5em;
-            animation: bounce 2s infinite;
-        }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-20px);}
-            60% {transform: translateY(-10px);}
-        }
-        nav {
-            background: #ff6666;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-            padding: 15px 25px;
-            font-size: 1.2em;
-            transition: background 0.3s ease, transform 0.3s ease;
-        }
-        nav a:hover {
-            background: #990000;
-            transform: scale(1.1);
-        }
-        section {
-            padding: 20px;
-            margin: 20px;
-            border-radius: 15px;
-            background: white;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.5);
-            z-index: -1;
-            transform: skewY(-5deg);
-            transform-origin: bottom left;
-        }
-        section img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        footer {
-            background: #cc0000;
-            color: white;
-            text-align: center;
-            padding: 15px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            color: #990000;
-            font-size: 2em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        p {
-            font-size: 1.2em;
-            line-height: 1.6;
-        }
-        ul, ol {
-            font-size: 1.1em;
-            padding-left: 20px;
-        }
-        .emoji {
-            font-size: 1.5em;
-            margin-right: 10px;
-        }
-        .fun-facts li {
-            margin-bottom: 10px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binu's Awesome Corner 🌟 | A 7th grader's world of cricket, drawings &amp; Rubik's cubes</title>
+<meta name="description" content="Hi, I'm Binu! I'm 12 years old, in Class 7 at Gayatri Global School. Come and see my hobbies, my drawings, my school life and my big dreams — and say hi to my little brother Himu too.">
+<meta name="theme-color" content="#e63946">
+<meta property="og:title" content="Binu's Awesome Corner 🌟">
+<meta property="og:description" content="A 7th grader's world of cricket, drawings, storybooks and Rubik's cubes.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌟%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add('js');</script>
+<script src="site.js" defer></script>
 </head>
-<body>
+<body data-person="binu">
 
-    <!-- Header -->
-    <header>
-        <h1>Welcome to Binu's Awesome Corner! 🌟</h1>
-        <p>Hi, I'm Binu from 5th Class at Gayatri Global School!</p>
-    </header>
+<a class="skip-link" href="#about">Skip to my page</a>
 
-    <!-- Navigation Bar -->
-    <nav>
-        <a href="#about">About Me 👦</a>
-        <a href="#hobbies">My Hobbies 🎨</a>
-        <a href="#school">School Life 🏫</a>
-        <a href="#funfacts">Fun Facts 😄</a>
+<!-- Header -->
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#top">🌟 Binu's Awesome Corner</a>
+    <nav class="nav" aria-label="Sections of my page">
+      <a href="#about">About Me 👦</a>
+      <a href="#hobbies">Hobbies 🎨</a>
+      <a href="#gallery">Drawings 🖍️</a>
+      <a href="#school">School 🏫</a>
+      <a href="#funfacts">Fun Facts 😄</a>
+      <a href="#dreams">Dreams 🎖️</a>
+      <a href="#hello">Say Hi 👋</a>
+      <a class="page-link" href="himu.html">Himu's Page 👦 →</a>
+      <a class="page-link" href="games.html">Games 🎮 →</a>
     </nav>
+  </div>
+</header>
 
-    <!-- Main Content -->
-    <div id="content">
+<main id="top">
 
-        <!-- About Me Section -->
-        <section id="about">
-            <h2>About Me 👦</h2>
-            <img src="https://via.placeholder.com/150" alt="Binu's Picture">
-            <p>Hello! My name is Binu, and I am 10 years old. I study in the 5th class at Gayatri Global School. I love making new friends and learning new things every day.</p>
-        </section>
-
-        <!-- My Hobbies Section -->
-        <section id="hobbies">
-            <h2>My Hobbies 🎨</h2>
-            <ul>
-                <li><span class="emoji">🏏</span>Playing cricket with my friends</li>
-                <li><span class="emoji">🖌️</span>Drawing pictures of animals and nature</li>
-                <li><span class="emoji">📚</span>Reading storybooks</li>
-                <li><span class="emoji">🎲</span>Solving Rubik's Cube puzzles</li>
-            </ul>
-            <img src="https://via.placeholder.com/300" alt="Binu Playing Cricket">
-        </section>
-
-        <!-- School Life Section -->
-        <section id="school">
-            <h2>School Life 🏫</h2>
-            <p>I love going to school because I enjoy studying English, science, and art. Our teachers are very kind and always encourage us to do our best. Here's a picture of my classroom:</p>
-            <img src="https://via.placeholder.com/300" alt="Classroom Picture">
-        </section>
-
-        <!-- Fun Facts Section -->
-        <section id="funfacts">
-            <h2>Fun Facts About Me 😄</h2>
-            <ol class="fun-facts">
-                <li><span class="emoji">🐶</span>I have a pet dog named Max.</li>
-                <li><span class="emoji">❤️</span>My favorite color is red.</li>
-                <li><span class="emoji">🎲</span>I can solve a Rubik's Cube in under 2 minutes!</li>
-                <li><span class="emoji">🪖</span>My dream is to join the Army one day.</li>
-            </ol>
-        </section>
-
+  <!-- Hero -->
+  <section class="wrap hero" aria-labelledby="hero-title">
+    <div>
+      <span class="kicker">Hi there, I'm Binu 👋</span>
+      <h1 id="hero-title">Welcome to my <span class="pop">awesome corner</span> of the internet! 🌟</h1>
+      <p class="hero-lead">
+        I'm 12 years old and I study in Class 7 at Gayatri Global School. I play cricket,
+        draw cartoon animals, read adventure stories and solve Rubik's Cubes —
+        sometimes all of it in one single afternoon.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#about">Meet me 👦</a>
+        <a class="btn btn-ghost" href="#hello">Say hi 👋</a>
+      </div>
+      <div class="chip-row">
+        <span class="chip">🎂 12 years old</span>
+        <span class="chip">🎒 Class 7</span>
+        <span class="chip">🏫 Gayatri Global School</span>
+        <span class="chip">❤️ Team Red</span>
+      </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2023 Binu's Awesome Corner. All rights reserved. 🌈</p>
-    </footer>
+    <figure class="hero-art">
+      <div class="avatar" role="img" aria-label="A cheerful cartoon picture that stands in for my photo">🧒</div>
+      <figcaption>That's me! My self-portrait drawing is on the way 🖍️</figcaption>
+      <span class="sticker s1">🏏 Cricket fan</span>
+      <span class="sticker s2">🎲 Cube speedster</span>
+      <span class="sticker s3">🐶 Max's best friend</span>
+      <span class="sticker s4">🎖️ Future officer</span>
+    </figure>
+  </section>
+
+  <!-- Stats -->
+  <section class="wrap stats" aria-label="Quick facts about me">
+    <div class="stat"><b>12</b><span>years old 🎂</span></div>
+    <div class="stat"><b>Class 7</b><span>at Gayatri Global School 🎒</span></div>
+    <div class="stat"><b>&lt; 2 min</b><span>to solve a Rubik's Cube 🎲</span></div>
+    <div class="stat"><b>1 dog</b><span>named Max 🐶</span></div>
+  </section>
+
+  <!-- The Awesome Brothers -->
+  <section class="wrap siblings" aria-label="Me and my brother Himu">
+    <div class="sib-head"><span>The Awesome Brothers</span><i></i></div>
+    <div class="sib-row">
+      <a class="sib current" href="index.html" aria-current="page">
+        <span class="sib-emoji" aria-hidden="true">🧒</span>
+        <span class="sib-info">
+          <strong>Binu</strong>
+          <small>Class 7 · 12 years old · loves cricket, drawing and cubes</small>
+        </span>
+        <span class="sib-badge">You are here</span>
+      </a>
+      <a class="sib" href="himu.html">
+        <span class="sib-emoji" aria-hidden="true">👦</span>
+        <span class="sib-info">
+          <strong>Himu</strong>
+          <small>Class 4 · 9 years old · loves football, painting and blocks</small>
+        </span>
+        <span class="sib-go">Visit his page →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="wrap section reveal" id="about" aria-labelledby="about-title">
+    <div class="section-head">
+      <span class="eyebrow">About me</span>
+      <h2 id="about-title">A little bit about me 👦</h2>
+      <p>
+        Hello! My name is Binu and I am 12 years old. I love making new friends, asking
+        a hundred questions, and learning something new every single day. Here is my
+        little ID card — the most important bits about me.
+      </p>
+    </div>
+    <ul class="facts">
+      <li><span class="emoji">🧒</span> My name is Binu</li>
+      <li><span class="emoji">🎂</span> I am 12 years old</li>
+      <li><span class="emoji">🎒</span> I study in Class 7</li>
+      <li><span class="emoji">🏫</span> Gayatri Global School</li>
+      <li><span class="emoji">❤️</span> My favourite colour is red</li>
+      <li><span class="emoji">🐶</span> My dog Max is my best friend</li>
+      <li><span class="emoji">👦</span> My little brother Himu is in Class 4 — he has his own corner here too</li>
+      <li><span class="emoji">🎖️</span> My big dream is to join the Army</li>
+    </ul>
+  </section>
+
+  <!-- Hobbies -->
+  <section class="wrap section reveal" id="hobbies" aria-labelledby="hobbies-title">
+    <div class="section-head">
+      <span class="eyebrow">What I love doing</span>
+      <h2 id="hobbies-title">My hobbies 🎨</h2>
+      <p>These four things take up almost all of my free time — and I am happy about that.</p>
+    </div>
+    <div class="grid cols-4">
+      <article class="card">
+        <div class="card-icon y">🏏</div>
+        <h3>Cricket</h3>
+        <p>I bat, I bowl, and I always ask for "one more over". Weekends are for the ground with my friends.</p>
+        <div class="level"><span class="stars" aria-label="4 out of 5">★★★★☆</span><small>Getting better</small></div>
+      </article>
+      <article class="card">
+        <div class="card-icon">🖌️</div>
+        <h3>Drawing</h3>
+        <p>Animals, mountains and superheroes. My sketchbook is almost full and I am not even done yet.</p>
+        <div class="level"><span class="stars" aria-label="5 out of 5">★★★★★</span><small>My superpower</small></div>
+      </article>
+      <article class="card">
+        <div class="card-icon b">📚</div>
+        <h3>Storybooks</h3>
+        <p>Adventure and mystery stories. I finish one chapter every night before I go to sleep.</p>
+        <div class="level"><span class="stars" aria-label="5 out of 5">★★★★★</span><small>A chapter a night</small></div>
+      </article>
+      <article class="card">
+        <div class="card-icon g">🎲</div>
+        <h3>Rubik's Cube</h3>
+        <p>Mix it, twist it, solve it. I can finish a cube in under two minutes and my record keeps getting faster.</p>
+        <div class="level"><span class="stars" aria-label="4 out of 5">★★★★☆</span><small>Under 2 minutes</small></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section class="wrap section reveal" id="gallery" aria-labelledby="gallery-title">
+    <div class="section-head">
+      <span class="eyebrow">Straight from my sketchbook</span>
+      <h2 id="gallery-title">My drawing corner 🖍️</h2>
+      <p>
+        I drew all of these in my sketchbook (this is my doodle version of them).
+        Tell me which one is your favourite!
+      </p>
+    </div>
+    <div class="gallery">
+      <figure class="art">
+        <div class="canvas" role="img" aria-label="Doodle of a lion in the sun">🦁</div>
+        <figcaption>Lion in the sun <span>crayons · my first big drawing</span></figcaption>
+      </figure>
+      <figure class="art">
+        <div class="canvas c2" role="img" aria-label="Doodle of mountains in the morning">🏔️</div>
+        <figcaption>Mountain morning <span>pencil · added snow with an eraser</span></figcaption>
+      </figure>
+      <figure class="art">
+        <div class="canvas c3" role="img" aria-label="Doodle of an elephant family">🐘</div>
+        <figcaption>Elephant family <span>watercolour · my trunk needs practice</span></figcaption>
+      </figure>
+      <figure class="art">
+        <div class="canvas c2" role="img" aria-label="Doodle of a rocket flying to Mars">🚀</div>
+        <figcaption>Rocket to Mars <span>sketch pen · my fastest drawing</span></figcaption>
+      </figure>
+      <figure class="art">
+        <div class="canvas" role="img" aria-label="Doodle portrait of my dog Max">🐶</div>
+        <figcaption>Max's portrait <span>pencil · he would not sit still</span></figcaption>
+      </figure>
+      <figure class="art">
+        <div class="canvas c3" role="img" aria-label="Doodle of a rainbow after rain">🌈</div>
+        <figcaption>Rainbow after rain <span>crayons · 7 colours, no shortcuts</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- School -->
+  <section class="wrap section reveal" id="school" aria-labelledby="school-title">
+    <div class="section-head">
+      <span class="eyebrow">Monday to Friday</span>
+      <h2 id="school-title">My school life 🏫</h2>
+      <p>
+        I love going to school because I enjoy studying English, Science and Art.
+        Our teachers are very kind and they always tell us to do our best.
+      </p>
+    </div>
+    <div class="grid cols-2">
+      <div class="subjects">
+        <div class="subject">
+          <span><strong>English 📖</strong><small>Stories, poems and new words</small></span>
+          <span class="stars" aria-label="5 out of 5">★★★★★</span>
+        </div>
+        <div class="subject">
+          <span><strong>Science 🔬</strong><small>Experiment day is the best day</small></span>
+          <span class="stars" aria-label="4 out of 5">★★★★☆</span>
+        </div>
+        <div class="subject">
+          <span><strong>Art 🎨</strong><small>My happiest subject of all</small></span>
+          <span class="stars" aria-label="5 out of 5">★★★★★</span>
+        </div>
+        <div class="subject">
+          <span><strong>Maths ➗</strong><small>Getting better every week</small></span>
+          <span class="stars" aria-label="3 out of 5">★★★☆☆</span>
+        </div>
+      </div>
+      <div class="note">
+        <p>
+          Our classroom has a big green board, a tiny reading corner with cushions,
+          and drawings stuck all over the back wall — a few of them are mine. 🖍️
+        </p>
+        <p>
+          My favourite time of the day is the last period, because that is when we
+          get to draw, play and talk with our friends. My brother Himu is just down
+          the corridor in Class 4, and we walk home together. 👦
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fun facts -->
+  <section class="wrap section reveal" id="funfacts" aria-labelledby="funfacts-title">
+    <div class="section-head">
+      <span class="eyebrow">True stories</span>
+      <h2 id="funfacts-title">Fun facts about me 😄</h2>
+      <p>Some of these surprise my friends at school. Tap the button for a bonus fact!</p>
+    </div>
+    <div class="grid cols-2">
+      <div>
+        <ul class="facts" style="grid-template-columns:1fr">
+          <li><span class="emoji">🐶</span> I have a pet dog named Max — he is scared of the vacuum cleaner.</li>
+          <li><span class="emoji">❤️</span> My favourite colour is red: red bottle, red bag, red cap.</li>
+          <li><span class="emoji">🎲</span> I can solve a Rubik's Cube in under 2 minutes!</li>
+          <li><span class="emoji">🎖️</span> My dream is to join the Army one day.</li>
+          <li><span class="emoji">🌙</span> I read one chapter of a storybook every night before sleeping.</li>
+          <li><span class="emoji">🍦</span> Chocolate ice cream can fix almost any bad day.</li>
+        </ul>
+      </div>
+      <div class="factbox">
+        <span class="kicker" style="margin:0">Surprise me</span>
+        <h3 style="margin:0">One more thing about me…</h3>
+        <p id="factOut" aria-live="polite">Tap the button and I will tell you a secret! 🤫</p>
+        <button class="btn btn-yellow" type="button" id="surpriseBtn">Give me a fun fact 🎉</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dreams -->
+  <section class="wrap section reveal" id="dreams" aria-labelledby="dreams-title">
+    <div class="section-head">
+      <span class="eyebrow">What I am working on</span>
+      <h2 id="dreams-title">My dream board 🎖️</h2>
+      <p>These are the things I am working on right now. Watch how far I have come!</p>
+    </div>
+    <div class="grid cols-2">
+      <div class="dream reveal" style="--w:20%">
+        <div class="dream-top"><strong>🎖️ Join the Army</strong><span>20%</span></div>
+        <div class="dream-bar"><i></i></div>
+        <small>The big dream. I run, do push-ups and never give up. 💪</small>
+      </div>
+      <div class="dream reveal" style="--w:65%">
+        <div class="dream-top"><strong>🎲 Solve a cube in under 30 seconds</strong><span>65%</span></div>
+        <div class="dream-bar"><i></i></div>
+        <small>I practise after homework. My best time is 1 minute 40 seconds.</small>
+      </div>
+      <div class="dream reveal" style="--w:45%">
+        <div class="dream-top"><strong>🖍️ Fill 100 pages of my sketchbook</strong><span>45%</span></div>
+        <div class="dream-bar"><i></i></div>
+        <small>Animals, rockets and mountains — one page at a time.</small>
+      </div>
+      <div class="dream reveal" style="--w:70%">
+        <div class="dream-top"><strong>📚 Read 100 storybooks</strong><span>70%</span></div>
+        <div class="dream-bar"><i></i></div>
+        <small>Adventure stories are my favourite. Mystery is a close second.</small>
+      </div>
+      <div class="dream reveal" style="--w:30%">
+        <div class="dream-top"><strong>🏏 Score a half-century in a match</strong><span>30%</span></div>
+        <div class="dream-bar"><i></i></div>
+        <small>I am working on my straight drive. Watch out, bowlers!</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- Say hi -->
+  <section class="wrap section reveal" id="hello" aria-labelledby="hello-title">
+    <div class="hello">
+      <div>
+        <span class="eyebrow" style="color:#7a5c2e">Hello there!</span>
+        <h2 id="hello-title">Say hi to me 👋</h2>
+        <p>
+          Do you want to say hello, share a drawing idea, or challenge me to a
+          Rubik's Cube race? Send me a wave — I will wave right back!
+        </p>
+        <div class="chip-row">
+          <span class="chip">🖍️ Send me a drawing idea</span>
+          <span class="chip">🎲 Challenge me to a cube race</span>
+          <span class="chip">🏏 Talk cricket</span>
+        </div>
+      </div>
+      <div class="wave-art">
+        <span class="big" role="img" aria-label="A waving hand">👋</span>
+        <p class="wave-out" id="waveOut" aria-live="polite">Waves so far: 0</p>
+        <button class="btn btn-primary" type="button" id="waveBtn">Wave back at me 👋</button>
+      </div>
+    </div>
+
+    <!-- A grown-up can add a contact email here later; a real contact form can be wired up too. -->
+    <div class="contact-note">
+      <p style="margin:0">
+        <strong>📮 For grown-ups:</strong> this corner is my school project.
+        You can reach my family through the school office at Gayatri Global School.
+        My brother Himu has a page here too — <a href="himu.html">go and say hi to him</a>.<br>
+        Bored? Try our <a href="games.html">games room — 22 games for two players 🎮</a>
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>
+      <strong style="font-family:var(--font-head);font-size:1.1rem">🌟 The Awesome Brothers</strong>
+      <small>&copy; 2026 Binu &amp; Himu · Made with ❤️, red crayon for Binu, blue paint for Himu, and one very tired Rubik's Cube.</small>
+    </div>
+    <nav class="footer-links" aria-label="Footer">
+      <a href="#about">About</a>
+      <a href="#hobbies">Hobbies</a>
+      <a href="#gallery">Drawings</a>
+      <a href="#school">School</a>
+      <a href="#funfacts">Fun facts</a>
+      <a href="#dreams">Dreams</a>
+      <a href="himu.html">Himu's page</a>
+      <a href="games.html">Games room</a>
+      <a href="#top">Back to top ↑</a>
+    </nav>
+  </div>
+</footer>
+
+<button class="to-top" type="button" id="toTop" aria-label="Back to top of page">↑</button>
+<div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
 
 </body>
 </html>

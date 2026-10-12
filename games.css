@@ -1,0 +1,342 @@
+/* Styles for the Awesome Games Room (games.html) and the GameKit games.
+   Loaded after styles.css, which supplies the colours, fonts and page furniture. */
+
+/* ---------------- games room page ---------------- */
+.games-hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;padding-block:48px 26px}
+.games-hero h1{font-size:clamp(2rem,5.4vw,3.3rem)}
+.games-hero p{color:var(--muted);font-size:1.08rem;max-width:52ch}
+.games-hero-art{
+  position:relative;border-radius:32px;padding:26px;
+  background:linear-gradient(150deg,#e8f4ff,#ffe9d6 55%,#ffe1ea);
+  border:4px solid #fff;box-shadow:var(--shadow);text-align:center;
+}
+.games-hero-art .smiley{font-size:clamp(3.4rem,12vw,5.4rem);display:block;animation:float 5s ease-in-out infinite}
+.games-hero-art .art-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}
+
+.gk-chip{
+  background:#fff;border:2px solid rgba(42,37,48,.08);border-radius:999px;
+  padding:5px 12px;font-weight:800;font-size:.78rem;color:var(--muted);
+}
+.gk-chip-on{background:var(--red);border-color:var(--red);color:#fff}
+
+.filter-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 22px}
+.gk-filter{
+  background:#fff;border:2px solid rgba(42,37,48,.08);border-radius:999px;
+  padding:9px 16px;font-family:var(--font-head);font-weight:800;font-size:.92rem;
+  color:var(--ink);cursor:pointer;transition:transform .2s ease,background .2s ease,color .2s ease;
+}
+.gk-filter:hover{transform:translateY(-2px)}
+.gk-filter-on{background:var(--red);border-color:var(--red);color:#fff}
+.filter-count{color:var(--muted);font-weight:700;font-size:.9rem;margin-left:4px}
+
+.game-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:18px}
+.game-card{
+  background:#fff;border-radius:22px;padding:20px;border:3px solid #fff;
+  box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.game-card:hover{transform:translateY(-6px) rotate(-.6deg)}
+.game-card-top{display:flex;align-items:center;gap:12px}
+.game-emoji{
+  font-size:1.8rem;width:52px;height:52px;border-radius:16px;display:grid;place-items:center;
+  background:linear-gradient(140deg,#fff3e6,#e8f4ff);flex:0 0 auto;
+}
+.game-card h3{margin:0;font-size:1.08rem}
+.game-tag{
+  display:inline-block;font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--blue);background:rgba(58,166,232,.12);border-radius:999px;padding:2px 9px;margin-top:3px;
+}
+.game-blurb{margin:0;color:var(--muted);font-size:.94rem;flex:1}
+.game-actions{display:flex;flex-wrap:wrap;gap:8px}
+
+/* ---------------- the game screen ---------------- */
+.game-stage{scroll-margin-top:110px}
+.stage-head{
+  display:flex;flex-wrap:wrap;align-items:center;gap:12px;
+  background:#fff;border-radius:22px;padding:14px 18px;box-shadow:var(--shadow);margin-bottom:16px;
+}
+.stage-head h2{margin:0;font-size:1.3rem;display:flex;align-items:center;gap:10px}
+.stage-head .spacer{flex:1}
+.mode-switch{display:flex;gap:6px;background:rgba(42,37,48,.06);border-radius:999px;padding:4px}
+.gk-mode-btn{
+  border:0;background:transparent;border-radius:999px;padding:8px 14px;
+  font-family:var(--font-head);font-weight:800;font-size:.86rem;color:var(--muted);cursor:pointer;
+}
+.gk-mode-on{background:#fff;color:var(--red-dark);box-shadow:0 6px 14px -10px rgba(0,0,0,.6)}
+.gk-status{
+  font-weight:800;color:var(--ink);background:#fff6dd;border-radius:14px;
+  padding:12px 16px;margin:0 0 16px;min-height:1.6em;
+}
+.gk-root{position:relative;background:#fff;border-radius:26px;padding:18px;box-shadow:var(--shadow)}
+.gk-result{
+  margin-top:16px;background:linear-gradient(140deg,#fff,#fff6ef);
+  border:3px dashed rgba(230,57,70,.45);border-radius:22px;padding:18px;text-align:center;
+}
+.gk-result p{margin:0 0 12px;font-family:var(--font-head);font-size:1.2rem;font-weight:800}
+.gk-rules{margin-top:16px;background:rgba(255,255,255,.7);border-radius:16px;padding:12px 16px}
+.gk-rules summary{font-weight:800;cursor:pointer}
+.gk-rules p{color:var(--muted);margin:8px 0 0}
+
+/* ---------------- GameKit basics ---------------- */
+.gk-grid{display:grid;gap:4px;width:min(100%,460px);margin:0 auto;touch-action:manipulation}
+.gk-cell{
+  aspect-ratio:1;border:0;padding:0;background:rgba(255,255,255,.62);border-radius:6px;
+  display:grid;place-items:center;font-family:inherit;font-size:1rem;color:inherit;
+  cursor:pointer;transition:background .15s ease, box-shadow .15s ease, transform .15s ease;
+  position:relative;
+}
+.gk-cell:hover{background:#fff}
+.gk-btn{
+  display:inline-flex;align-items:center;gap:8px;font-family:var(--font-head);font-weight:800;
+  font-size:.95rem;padding:11px 18px;border-radius:999px;border:3px solid transparent;
+  cursor:pointer;background:#fff;color:var(--ink);transition:transform .2s ease,background .2s ease;
+}
+.gk-btn:hover{transform:translateY(-2px)}
+.gk-btn-main{background:var(--red);color:#fff}
+.gk-btn-main:hover{background:var(--red-dark)}
+.gk-btn-ghost{border-color:rgba(42,37,48,.14)}
+.gk-btn-yellow{background:var(--yellow);color:#5a4200}
+.gk-btn-small{padding:8px 14px;font-size:.85rem}
+.gk-controls{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;margin-top:16px}
+.gk-scoreline{text-align:center;font-weight:800;color:var(--muted);margin:0 0 12px}
+.gk-hint{text-align:center;color:var(--muted);font-weight:700;margin:10px 0 0}
+.gk-dice{font-size:2.4rem;line-height:1}
+.gk-cover{
+  position:absolute;inset:0;z-index:6;border-radius:26px;
+  background:rgba(255,249,242,.97);display:grid;place-items:center;text-align:center;padding:20px;
+}
+.gk-cover-card{max-width:340px;display:flex;flex-direction:column;gap:10px;align-items:center}
+.gk-cover-card strong{font-family:var(--font-head);font-size:1.3rem}
+.gk-cover-card p{margin:0;color:var(--muted);font-weight:600}
+.gk-input{
+  font-family:inherit;font-size:1rem;padding:11px 14px;border-radius:999px;
+  border:2px solid rgba(42,37,48,.15);background:#fff;min-width:0;flex:1 1 180px;
+}
+.gk-setup-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+
+/* ---------------- tic-tac-toe ---------------- */
+.gk-ttt{width:min(100%,380px)}
+.gk-ttt-cell{background:#fff;font-family:var(--font-head);font-weight:800;font-size:clamp(2rem,9vw,3rem);box-shadow:var(--shadow)}
+.gk-ttt-cell.gk-X{color:var(--red)}
+.gk-ttt-cell.gk-O{color:var(--blue)}
+.gk-ttt-cell.gk-win{background:#fff3cd}
+
+/* ---------------- connect four ---------------- */
+.gk-c4{width:min(100%,470px);gap:7px}
+.gk-c4-cell{background:#e6f0ff;border-radius:50%;font-size:clamp(15px,4vw,26px)}
+.gk-c4-cell.gk-p1{background:#ffe1e4}
+.gk-c4-cell.gk-p2{background:#fff6dd}
+
+/* ---------------- dots & boxes ---------------- */
+.gk-db{width:min(100%,430px);gap:0}
+.gk-db .gk-cell,.gk-db .gk-db-cell{background:transparent;border-radius:0;cursor:default}
+.gk-db .gk-dot::after{content:'';width:24%;height:24%;border-radius:50%;background:#c3bbcd}
+.gk-db .gk-hline,.gk-db .gk-vline{cursor:pointer}
+.gk-db .gk-hline::after{content:'';width:100%;height:14%;border-radius:99px;background:#e2dbe9}
+.gk-db .gk-vline::after{content:'';width:14%;height:100%;border-radius:99px;background:#e2dbe9}
+.gk-db .gk-hline:hover::after,.gk-db .gk-vline:hover::after{background:#cfc6d9}
+.gk-db .gk-own-P1::after{background:var(--red)}
+.gk-db .gk-own-P2::after{background:var(--blue)}
+.gk-db .gk-box{background:rgba(255,255,255,.85);border-radius:10px;cursor:default;font-weight:800}
+.gk-db .gk-box.gk-own-P1{background:rgba(230,57,70,.16);color:var(--red-dark)}
+.gk-db .gk-box.gk-own-P2{background:rgba(58,166,232,.16);color:#1b5a9c}
+
+/* ---------------- nim ---------------- */
+.gk-rack{display:grid;gap:14px;width:min(100%,520px);margin:0 auto}
+.gk-pile{background:rgba(255,255,255,.7);border-radius:18px;padding:12px 14px}
+.gk-pile-label{font-weight:800;color:var(--muted);font-size:.9rem;margin-bottom:8px}
+.gk-stones{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.gk-stone{
+  width:22px;height:22px;border-radius:50%;
+  background:radial-gradient(circle at 32% 28%, #fff 5%, var(--yellow) 55%, #d9a400);
+  box-shadow:0 3px 6px -3px rgba(0,0,0,.6);
+}
+.gk-takes{display:flex;flex-wrap:wrap;gap:8px}
+
+/* ---------------- snakes & ladders ---------------- */
+.gk-snakes{width:min(100%,520px);gap:3px}
+.gk-square{
+  background:#fff;font-family:var(--font-head);font-weight:800;
+  font-size:clamp(8px,2.1vw,13px);padding:2px;line-height:1.1;
+}
+.gk-ladder{background:#e8f8ef}
+.gk-snakecell{background:#ffe9f0}
+.gk-here{box-shadow:inset 0 0 0 3px var(--red)}
+
+/* ---------------- memory ---------------- */
+.gk-memory{width:min(100%,420px);gap:8px}
+.gk-mem-card{background:#fff;font-size:clamp(1.2rem,5vw,2rem);box-shadow:var(--shadow);border-radius:14px}
+.gk-mem-card.gk-matched{background:rgba(63,169,110,.18)}
+
+/* ---------------- simon ---------------- */
+.gk-pads{display:grid;grid-template-columns:repeat(2,minmax(88px,1fr));gap:12px;width:min(100%,360px);margin:0 auto}
+.gk-pad{
+  aspect-ratio:1;border-radius:24px;border:4px solid #fff;background:#fff;
+  font-size:clamp(1.7rem,7vw,2.6rem);cursor:pointer;box-shadow:var(--shadow);
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.gk-pad.gk-lit{transform:scale(1.07);box-shadow:0 0 0 7px var(--yellow)}
+
+/* ---------------- hangman ---------------- */
+.gk-word{font-family:var(--font-head);font-size:clamp(1.3rem,5vw,2rem);letter-spacing:.14em;text-align:center;font-weight:800}
+.gk-keys{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:430px;margin:14px auto 0}
+.gk-key{
+  width:38px;height:38px;border-radius:10px;border:2px solid rgba(42,37,48,.12);
+  background:#fff;font-weight:800;cursor:pointer;font-family:inherit;
+}
+.gk-key:hover{background:#fff6dd}
+.gk-key.gk-used{opacity:.32;cursor:default}
+.gk-setup{text-align:center}
+
+/* ---------------- mastermind ---------------- */
+.gk-mm-row{display:flex;gap:8px;justify-content:center;margin-bottom:12px}
+.gk-mm-slot{
+  width:clamp(38px,11vw,50px);aspect-ratio:1;border-radius:50%;background:#fff;
+  border:3px dashed rgba(42,37,48,.16);display:grid;place-items:center;font-size:1.5rem;
+}
+.gk-mm-slot.gk-filled{border-style:solid;border-color:transparent}
+.gk-mm-palette{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.gk-mm-color{
+  width:clamp(38px,11vw,48px);aspect-ratio:1;border-radius:50%;background:#fff;border:3px solid #fff;
+  font-size:1.5rem;cursor:pointer;box-shadow:var(--shadow);
+}
+.gk-mm-color:hover{transform:translateY(-3px)}
+.gk-mm-history{margin-top:14px;display:grid;gap:6px}
+.gk-mm-history-row{display:flex;gap:14px;justify-content:center;font-size:1.05rem;font-weight:700}
+.gk-mm-guess{letter-spacing:.12em}
+.gk-mm-fb{color:var(--muted);letter-spacing:.08em}
+
+/* ---------------- word scramble ---------------- */
+.gk-scramble{font-family:var(--font-head);font-weight:800;font-size:clamp(1.4rem,6vw,2.2rem);letter-spacing:.2em;text-align:center;color:var(--red-dark)}
+
+/* ---------------- rock paper scissors ---------------- */
+.gk-hands{display:flex;justify-content:center;gap:clamp(24px,10vw,70px);margin:6px 0 2px}
+.gk-hand{font-size:clamp(2.4rem,10vw,3.4rem);line-height:1;filter:drop-shadow(0 6px 10px rgba(42,37,48,.25))}
+.gk-rps-btn{font-size:1rem}
+
+/* ---------------- guess the number ---------------- */
+.gk-range{text-align:center;font-weight:800;color:var(--muted);margin:0 0 10px}
+.gk-num{max-width:160px;flex:0 0 auto;text-align:center}
+
+/* ---------------- reaction duel ---------------- */
+.gk-arena{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;width:min(100%,620px);margin:0 auto}
+.gk-rpad{
+  min-height:140px;border-radius:24px;border:4px solid #fff;background:#fff;
+  font-family:var(--font-head);font-size:1.05rem;font-weight:800;cursor:default;
+  box-shadow:var(--shadow);transition:background .2s ease, transform .1s ease;
+}
+.gk-arena.gk-wait .gk-rpad{background:#f1e7f5;color:var(--muted)}
+.gk-arena.gk-go .gk-rpad{background:#3fa96e;color:#fff;cursor:pointer}
+.gk-arena.gk-go .gk-rpad:active{transform:scale(.98)}
+.gk-arena.gk-done .gk-rpad{background:#fff6dd}
+
+/* ---------------- chess / checkers / reversi ---------------- */
+.gk-chess,.gk-checkers,.gk-reversi{width:min(100%,520px);gap:0;border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+.gk-sq{border-radius:0;font-size:clamp(19px,5.6vw,36px);line-height:1}
+.gk-light{background:#f0d9b5;color:#3a2a1a}
+.gk-dark{background:#b58863;color:#241505}
+.gk-square.gk-light:hover,.gk-square.gk-dark:hover{filter:brightness(1.06)}
+.gk-selected{box-shadow:inset 0 0 0 4px var(--yellow)}
+.gk-can-go::after{content:'';width:28%;height:28%;border-radius:50%;background:rgba(42,37,48,.4)}
+.gk-can-take{box-shadow:inset 0 0 0 4px rgba(230,57,70,.75)}
+.gk-chk{font-size:clamp(18px,5vw,32px)}
+.gk-crowned{filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
+.gk-rev .gk-cell{display:grid;place-items:center}
+.gk-disc{width:76%;aspect-ratio:1;border-radius:50%;display:block}
+.gk-disc-B{background:#2a2530}
+.gk-disc-W{background:#fff;box-shadow:inset 0 0 0 3px rgba(42,37,48,.25)}
+
+/* ---------------- ludo ---------------- */
+.gk-ludo{width:min(100%,560px);gap:1px;background:#fff;padding:6px;border-radius:18px;box-shadow:var(--shadow)}
+.gk-ludo-cell{background:rgba(42,37,48,.05);border-radius:3px;cursor:default}
+.gk-ludo-track{background:#fff;box-shadow:inset 0 0 0 2px rgba(42,37,48,.1)}
+.gk-ludo-safe{background:#fff6dd;box-shadow:inset 0 0 0 2px rgba(201,154,0,.4)}
+.gk-ludo-centre{background:rgba(42,37,48,.09)}
+.gk-home-red{background:rgba(230,57,70,.4)}
+.gk-home-yellow{background:rgba(255,201,60,.5)}
+.gk-yard-red{background:rgba(230,57,70,.16)}
+.gk-yard-yellow{background:rgba(255,201,60,.22)}
+.gk-yard-green{background:rgba(63,169,110,.16)}
+.gk-yard-blue{background:rgba(58,166,232,.16)}
+.gk-token{
+  position:absolute;width:58%;height:58%;border-radius:50%;display:grid;place-items:center;
+  font-size:8px;font-weight:800;color:#fff;box-shadow:0 2px 5px rgba(0,0,0,.4);
+}
+.gk-token:nth-child(1){left:5%;top:5%}
+.gk-token:nth-child(2){right:5%;top:5%}
+.gk-token:nth-child(3){left:5%;bottom:5%}
+.gk-token:nth-child(4){right:5%;bottom:5%}
+.gk-token-red{background:#e63946}
+.gk-token-yellow{background:#ffc93c;color:#5a4200}
+.gk-token-move{outline:3px solid var(--green);cursor:pointer;animation:float 1.1s ease-in-out infinite}
+
+/* ---------------- mancala ---------------- */
+.gk-stores{display:flex;justify-content:space-between;gap:12px;width:min(100%,560px);margin:0 auto 12px;flex-wrap:wrap}
+.gk-store{background:#fff;border-radius:16px;padding:8px 14px;font-weight:800;box-shadow:var(--shadow);font-size:.9rem}
+.gk-store-p1{color:var(--red-dark)}
+.gk-store-p2{color:#1b5a9c}
+.gk-pit-row{display:flex;gap:10px;justify-content:center;margin-bottom:10px;flex-wrap:wrap}
+.gk-pit{
+  width:clamp(48px,11vw,68px);aspect-ratio:1;border-radius:50%;background:#fff;
+  border:3px solid rgba(42,37,48,.1);font-family:var(--font-head);font-weight:800;
+  font-size:.95rem;box-shadow:var(--shadow);cursor:default;
+}
+.gk-pit-live{border-color:var(--red);background:#fff5f6;cursor:pointer}
+.gk-pit-live:hover{transform:translateY(-3px)}
+
+/* ---------------- hex ---------------- */
+.gk-hex{width:min(100%,470px);gap:2px}
+.gk-hex-cell{
+  border-radius:0;background:rgba(42,37,48,.08);
+  clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);
+}
+.gk-hex-cell:hover{background:rgba(42,37,48,.16)}
+.gk-hex-p1{background:var(--red);color:#fff}
+.gk-hex-p2{background:#2a2530;color:#fff}
+
+/* ---------------- nine men's morris ---------------- */
+.gk-morris{
+  position:relative;width:min(100%,420px);aspect-ratio:1;margin:0 auto;
+  background:rgba(255,255,255,.6);border-radius:20px;
+}
+.gk-mring{position:absolute;border:3px solid rgba(42,37,48,.18);border-radius:8px}
+.gk-mpoint{
+  position:absolute;width:12%;aspect-ratio:1;transform:translate(-50%,-50%);
+  border-radius:50%;background:#fff;border:2px solid rgba(42,37,48,.18);cursor:pointer;padding:0;
+}
+.gk-mp-open{border-style:dashed;border-color:rgba(230,57,70,.5)}
+.gk-mp1{background:var(--red);border-color:var(--red)}
+.gk-mp2{background:#2a2530;border-color:#2a2530}
+.gk-mp-take{outline:4px solid var(--green);cursor:pointer;animation:float 1.2s ease-in-out infinite}
+
+/* ---------------- battleship ---------------- */
+.gk-bs{width:min(100%,420px);gap:6px}
+.gk-bs-cell{background:#cfeaff;border-radius:8px;font-size:clamp(15px,4vw,24px);box-shadow:inset 0 0 0 2px rgba(255,255,255,.7)}
+.gk-bs-cell:hover{background:#bfe0ff}
+.gk-boom{background:#ffd9de}
+.gk-splash{background:#eef6fb}
+.gk-ship{background:#3aa6e8}
+.gk-mine-hit{box-shadow:inset 0 0 0 4px rgba(230,57,70,.6)}
+
+/* ---------------- pong ---------------- */
+.gk-canvas{width:100%;max-width:640px;display:block;margin:0 auto;border-radius:18px;background:#101a2b}
+.gk-pong-controls{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;max-width:640px;margin:14px auto 0}
+.gk-padstack{display:flex;flex-direction:column;gap:8px;align-items:center}
+.gk-padlabel{font-weight:800;font-size:.82rem;color:var(--muted)}
+.gk-padbtn{
+  width:72px;height:46px;border-radius:14px;border:3px solid #fff;background:#fff;
+  font-size:1.05rem;cursor:pointer;box-shadow:var(--shadow);touch-action:none;
+}
+.gk-padbtn:active{transform:scale(.97);background:#fff6dd}
+
+/* ---------------- responsive ---------------- */
+@media (max-width:900px){
+  .games-hero{grid-template-columns:1fr;gap:28px;padding-block:36px 20px}
+  .games-hero-art{order:-1;max-width:440px;margin-inline:auto}
+}
+@media (max-width:620px){
+  .game-grid{grid-template-columns:1fr}
+  .gk-root{padding:12px}
+  .gk-rpad{min-height:110px}
+  .gk-padbtn{width:60px;height:42px}
+}
