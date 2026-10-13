@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Awesome Games Room 🎮 | 22 games and 112 levels for Binu &amp; Himu</title>
-<meta name="description" content="22 family games with 112 levels in all — chess, ludo, checkers, snakes and ladders, pong, memory and lots more. Play two-player on one screen or against the computer, and sign in to keep your levels and trophies.">
+<title>The Awesome Games Room 🎮 | 26 games and 132 levels for Binu &amp; Himu</title>
+<meta name="description" content="26 family games with 132 levels in all — chess, ludo, checkers, snakes and ladders, pong, memory, plus running, shooting, boxing and car racing games. Play two-player on one screen or against the computer, and sign in to keep your levels and trophies.">
 <meta name="theme-color" content="#e63946">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎮%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,6 +24,10 @@
 <script src="games/board1.js" defer></script>
 <script src="games/board2.js" defer></script>
 <script src="games/arcade.js" defer></script>
+<script src="games/runner.js" defer></script>
+<script src="games/shooter.js" defer></script>
+<script src="games/boxing.js" defer></script>
+<script src="games/racer.js" defer></script>
 <script src="games/polish.js" defer></script>
 <script src="games/players.js" defer></script>
 <script src="games/hub.js" defer></script>
@@ -58,15 +62,17 @@
       <h1 id="games-title">Welcome to our <span class="pop">games room</span>! 🎮</h1>
       <p>
         Binu and Himu built this corner of the website together. There are
-        <strong><span id="heroCount">22</span> games</strong> inside, and every one has
-        <strong>5 levels</strong> (memory match has 7) — that is 112 levels to beat! Start at level 1, win to
-        unlock the next one. Chess, ludo, checkers, snakes &amp; ladders, pong, memory
-        and lots more. Play <strong>two players on one screen</strong>, play
+        <strong><span id="heroCount">26</span> games</strong> inside, and every one has
+        <strong>5 levels</strong> (memory match has 7) — that is 132 levels to beat! Start at level 1, win to
+        unlock the next one. Chess, ludo, checkers, snakes &amp; ladders, pong, memory,
+        and four big action games: <strong>running</strong> 🏃, <strong>shooting</strong> 🚀,
+        <strong>boxing</strong> 🥊 and <strong>car racing</strong> 🏎️. Play <strong>two players on one screen</strong>, play
         <strong>online with a friend</strong> using a game ID, or take on the
         <strong>computer</strong>.
       </p>
       <div class="chip-row">
-        <span class="chip">🎚️ 112 levels in all</span>
+        <span class="chip">🎚️ 132 levels in all</span>
+        <span class="chip">🏃 Run · 🚀 Shoot · 🥊 Box · 🏎️ Race</span>
         <span class="chip">🌐 Play online with a game ID</span>
         <span class="chip">👤 Sign in, save your levels</span>
         <span class="chip">🏆 Trophies &amp; stars</span>
@@ -89,6 +95,7 @@
         <span class="gk-chip">🐍 Snakes</span>
         <span class="gk-chip">🏓 Pong</span>
         <span class="gk-chip">🃏 Memory</span>
+        <span class="gk-chip">🏎️ Turbo Race</span>
       </div>
     </div>
   </section>
@@ -116,6 +123,10 @@
         <span>🎯 <b>Mastermind</b></span>
         <span>🔀 <b>Word Scramble</b></span>
         <span>🏓 <b>Pong</b></span>
+        <span>🏃 <b>Super Runner</b></span>
+        <span>🚀 <b>Star Shooter</b></span>
+        <span>🥊 <b>Boxing Ring</b></span>
+        <span>🏎️ <b>Turbo Race</b></span>
       </div>
     </div>
   </section>
@@ -141,7 +152,7 @@
       <article class="card">
         <div class="card-icon g">🏆</div>
         <h3>Trophies &amp; stars</h3>
-        <p>Every game you play earns stars and trophies. The trophy shelf remembers your best level in all 22 games.</p>
+        <p>Every game you play earns stars and trophies. The trophy shelf remembers your best level in all 26 games.</p>
       </article>
       <article class="card">
         <div class="card-icon y">🤖</div>
@@ -179,9 +190,10 @@
       <button class="gk-filter" type="button" data-filter="Board">♟️ Board games</button>
       <button class="gk-filter" type="button" data-filter="Quick">⚡ Quick games</button>
       <button class="gk-filter" type="button" data-filter="Arcade">🕹️ Arcade</button>
+      <button class="gk-filter" type="button" data-filter="Action">🏃 Action games</button>
       <button class="gk-filter gk-random" type="button" id="randomBtn" title="Open a random game">🎲 Surprise me</button>
       <button class="gk-filter gk-trophy-btn" type="button" id="trophyBtn" title="Jump to your trophy shelf">🏆 My trophies</button>
-      <span class="filter-count">Showing <b id="gameCount">22</b> games · 112 levels</span>
+      <span class="filter-count">Showing <b id="gameCount">26</b> games · 132 levels</span>
     </div>
     <div class="game-grid" id="cards"></div>
   </section>
@@ -243,7 +255,7 @@
     <div class="gk-players-card" role="dialog" aria-modal="true" aria-labelledby="ppTitle">
       <button class="gk-pp-x" type="button" id="ppClose" aria-label="Close player options">✖</button>
       <h2 id="ppTitle">Who is playing? 🎨</h2>
-      <p class="gk-players-lead">Give everyone a name, a face and a colour. All 22 games use them straight away — and the boards are painted in your colours. Your choices are remembered for the player who is signed in.</p>
+      <p class="gk-players-lead">Give everyone a name, a face and a colour. All 26 games use them straight away — and the boards are painted in your colours. Your choices are remembered for the player who is signed in.</p>
       <div class="gk-pp-grid" id="ppGrid"></div>
       <div class="gk-pp-skins">
         <span class="gk-pp-tag">Board style</span>
@@ -265,7 +277,7 @@
   <div class="wrap footer-inner">
     <div>
       <strong style="font-family:var(--font-head);font-size:1.1rem">🎮 The Awesome Games Room</strong>
-      <small>Built by Binu &amp; Himu · 22 games · 112 levels · made with ❤️ and a lot of clicking.</small>
+      <small>Built by Binu &amp; Himu · 26 games · 132 levels · made with ❤️ and a lot of clicking.</small>
     </div>
     <nav class="footer-links" aria-label="Footer">
       <a href="index.html">Binu's page</a>

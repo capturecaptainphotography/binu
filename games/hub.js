@@ -1,7 +1,7 @@
 /* The Games Room controller: draws the cards, opens a game and
    hands it the shared api (status line, result banner, restart, cleanup).
    Player names, faces and colours come from games/players.js; levels, stars
-   and trophies come from the account module, so every one of the 22 games
+   and trophies come from the account module, so every one of the 26 games
    talks to the real people sitting there — at the level they have earned. */
 (function () {
   'use strict';
@@ -46,7 +46,8 @@
     battleship: '#2f7fd1', pong: '#4f5bd5', ticTacToe: '#e63946', connectFour: '#e8578f',
     dotsBoxes: '#8b5cf6', nim: '#7ab800', rps: '#d63aa8', memory: '#f4801a',
     simon: '#4f5bd5', hangman: '#2f9e63', guessNumber: '#12a5a5', reaction: '#e8a300',
-    mastermind: '#8b5cf6', wordScramble: '#e8578f'
+    mastermind: '#8b5cf6', wordScramble: '#e8578f',
+    runner: '#2f9e63', shooter: '#4f5bd5', boxing: '#d63aa8', racer: '#f4801a'
   };
 
   function hash(id) {

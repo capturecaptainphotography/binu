@@ -693,3 +693,98 @@ html[data-skin="rainbow"] .gk-pit{background:linear-gradient(160deg,#fff,var(--a
   .gk-online-bar{gap:8px}
   .gk-online-live{font-size:.78rem}
 }
+
+/* ==========================================================================
+   ACTION GAMES: SUPER RUNNER, STAR SHOOTER, BOXING RING AND TURBO RACE
+   One HUD strip and one set of touch buttons, shared by all four, so the
+   running, shooting, boxing and racing games feel like the same family as the
+   board games they sit next to.
+   ========================================================================== */
+.gk-hud{
+  display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;justify-content:center;
+  max-width:640px;margin:0 auto 12px;
+}
+.gk-hud-item{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  background:#fff;border:2px solid rgba(42,37,48,.08);border-radius:14px;
+  padding:6px 12px;min-width:80px;box-shadow:0 12px 20px -18px rgba(42,37,48,.7);
+}
+.gk-hud-item b{font-family:var(--font-head);font-size:1.02rem;line-height:1.1;color:var(--ink)}
+.gk-hud-item small{
+  font-size:.62rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  white-space:nowrap;
+}
+.gk-hud-meter{
+  position:relative;flex:1 1 200px;min-width:150px;height:14px;border-radius:99px;overflow:hidden;
+  background:rgba(42,37,48,.12);align-self:center;
+}
+.gk-hud-fill{
+  position:absolute;top:0;left:0;bottom:0;width:0;border-radius:99px;
+  background:linear-gradient(90deg,var(--accent,var(--red)),var(--p2,var(--blue)));
+  transition:width .2s ease;
+}
+
+/* ---- the touch buttons under the canvas ---- */
+.gk-actcontrols{max-width:640px;margin:14px auto 0;gap:12px}
+.gk-actcluster{display:flex;flex-direction:column;gap:8px;flex:1 1 250px;min-width:0}
+.gk-actcluster-p2 .gk-actlabel{color:var(--p2-deep,#225b96)}
+.gk-actrow{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+.gk-actlabel{text-align:center;font-weight:800;font-size:.78rem;color:var(--muted)}
+.gk-actbtn{
+  flex:1 1 auto;min-width:78px;min-height:56px;padding:12px 10px;border-radius:18px;
+  border:3px solid #fff;background:#fff;color:var(--ink);cursor:pointer;touch-action:none;
+  font-family:var(--font-head);font-weight:800;font-size:.94rem;
+  box-shadow:0 14px 24px -18px var(--accent-glow,rgba(42,37,48,.6));
+  transition:transform .12s ease,background .12s ease,box-shadow .12s ease;
+}
+.gk-actbtn:hover{transform:translateY(-2px)}
+.gk-actbtn:active{transform:scale(.96)}
+.gk-actbtn-go{background:var(--accent,var(--red));color:#fff}
+.gk-actbtn-jump{box-shadow:0 0 0 3px var(--accent-soft,#ffe9d6),0 16px 26px -18px var(--accent,var(--red))}
+.gk-actbtn-slide{background:#fff6dd}
+.gk-actbtn-move{background:rgba(42,37,48,.07);font-size:1.15rem}
+.gk-actbtn-fire{letter-spacing:.02em}
+.gk-actbtn-block{background:#dfe9f5}
+.gk-actbtn-jab{background:var(--p1,var(--red));color:#fff}
+.gk-actbtn-hook{background:var(--p1-deep,var(--red-dark));color:#fff}
+.gk-actbtn-dodge{background:#fff6dd}
+.gk-actbtn-nitro{background:#ffe3b0}
+.gk-actbtn-gas{box-shadow:0 0 0 3px var(--accent-soft,#ffe9d6),0 16px 26px -18px var(--accent,var(--red))}
+.gk-actbtn-brake{background:#ffd9de}
+
+/* ---- boxing: the two health and stamina bars ---- */
+.gk-fight{
+  display:flex;gap:14px;align-items:center;justify-content:space-between;
+  max-width:640px;margin:0 auto 12px;padding:10px 14px;border-radius:20px;
+  border:3px solid #fff;background:linear-gradient(120deg,#241d3c,#3a2c52 60%,#241d3c);
+  box-shadow:var(--shadow);
+}
+.gk-fight-side{display:flex;flex-direction:column;gap:5px;flex:1 1 0;min-width:0}
+.gk-fight-side-p2 .gk-fight-who{flex-direction:row-reverse}
+.gk-fight-who{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#fff;font-size:.82rem}
+.gk-fight-who b{font-family:var(--font-head);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gk-fight-who small{
+  font-weight:800;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.62);
+}
+.gk-fight-bar{position:relative;display:block;height:14px;border-radius:99px;overflow:hidden;background:rgba(255,255,255,.18)}
+.gk-fight-bar-stam{height:7px}
+.gk-fight-stam{opacity:.9}
+.gk-fight-fill{position:absolute;top:0;left:0;bottom:0;width:100%;border-radius:99px;transition:width .14s ease}
+.gk-fight-side-p2 .gk-fight-fill{left:auto;right:0}
+.gk-fight-mid{min-width:62px;text-align:center;color:#fff;font-family:var(--font-head);font-size:1.05rem;line-height:1.1}
+.gk-fight-mid b{display:block}
+.gk-fight-mid small{font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;opacity:.6;font-weight:800}
+
+/* ---- each action game wears its own frame around the picture ---- */
+.gk-runner{box-shadow:0 0 0 4px #fff,0 0 0 8px var(--accent-soft,#ffe9d6),0 32px 50px -32px rgba(11,20,36,.95)}
+.gk-shooter{background:#080b22;box-shadow:0 0 0 4px #fff,0 0 0 8px rgba(126,87,255,.4),0 32px 50px -32px rgba(11,20,36,.95)}
+.gk-boxing{box-shadow:0 0 0 4px #fff,0 0 0 8px rgba(255,201,60,.55),0 32px 50px -32px rgba(11,20,36,.95)}
+.gk-racer{box-shadow:0 0 0 4px #fff,0 0 0 8px var(--accent-soft,#ffe9d6),0 32px 50px -32px rgba(11,20,36,.95)}
+
+@media (max-width:620px){
+  .gk-hud-item{min-width:64px;padding:5px 9px}
+  .gk-hud-item b{font-size:.9rem}
+  .gk-actbtn{min-width:64px;min-height:50px;font-size:.86rem;padding:10px 6px}
+  .gk-fight{gap:8px;padding:8px 10px}
+  .gk-fight-who small{display:none}
+}

@@ -1,5 +1,5 @@
 /* Game-feel layer for the Awesome Games Room.
-   Instead of rewriting all 22 games, this watches the game board with a
+   Instead of rewriting all 26 games, this watches the game board with a
    MutationObserver and reacts to what the games draw: pieces pop in, captures
    shake, dice tumble, matched cards flip, scores pulse and the winner gets a
    banner, a fanfare and a confetti shower. */

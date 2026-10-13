@@ -2,7 +2,7 @@
    Names, faces and colours for the two players and the computer, saved in the
    browser. Every game in the room reads its names from here through the shared
    api, and every board reads its colours from the CSS variables this sets, so
-   choosing "Binu" and "Himu" really personalises all 22 games. */
+   choosing "Binu" and "Himu" really personalises all 26 games. */
 (function () {
   'use strict';
 
